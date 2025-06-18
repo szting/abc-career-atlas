@@ -224,6 +224,9 @@ def show_main_app():
         elif current_page == 'results':
             from pages.results import show_results
             show_results()
+        elif current_page == 'comparison_view':
+            from pages.comparison_view import show_comparison_view
+            show_comparison_view()
         elif current_page == 'coaching_dashboard':
             from pages.coaching_dashboard import show_coaching_dashboard
             show_coaching_dashboard()
@@ -261,6 +264,7 @@ if __name__ == "__main__":
         "data/users/profiles",
         "data/users/assessments", 
         "data/users/progress",
+        "data/jobskills",  # Correct directory for job skills data
         "static"  # For PWA assets
     ]
     

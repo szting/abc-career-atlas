@@ -1,6 +1,6 @@
 # Career Atlas - AI-Powered Career Guidance Platform
 
-A comprehensive career assessment and guidance application built with Streamlit, featuring RIASEC personality assessment, skills evaluation, work values analysis, and AI-powered personalized coaching.
+A comprehensive career assessment and guidance application built with Streamlit, featuring RIASEC personality assessment, skills evaluation, work values analysis, and AI-powered personalized coaching. Now available as a Progressive Web App (PWA) with offline support!
 
 ## Table of Contents
 
@@ -19,7 +19,7 @@ A comprehensive career assessment and guidance application built with Streamlit,
 
 ## Overview
 
-Career Atlas is an intelligent career guidance system that helps users discover their ideal career paths through scientifically-backed assessments and AI-powered recommendations. Think of it as having a personal career counselor available 24/7.
+Career Atlas is an intelligent career guidance system that helps users discover their ideal career paths through scientifically-backed assessments and AI-powered recommendations. Think of it as having a personal career counselor available 24/7, now accessible as a mobile app!
 
 ### What Makes Career Atlas Special?
 
@@ -30,6 +30,8 @@ Career Atlas is an intelligent career guidance system that helps users discover 
 - **Smart Learning**: Personalized learning recommendations with progress tracking
 - **Data-Driven**: Advanced analytics and insights for career development
 - **CSV Data Management**: Bulk upload capability for job roles, skills, and competencies
+- **Progressive Web App**: Install as a native app on any device with offline support
+- **Visual Comparisons**: Spider diagram visualization comparing RIASEC scores with skills confidence
 
 ## Features
 
@@ -42,6 +44,8 @@ Career Atlas is an intelligent career guidance system that helps users discover 
 - **Development Planning**: Get actionable steps to reach your career goals
 - **Visual Analytics**: See your results through interactive charts and graphs
 - **Progress Tracking**: Monitor your learning journey with streaks and statistics
+- **RIASEC vs Skills Comparison**: NEW! Visual spider diagram comparing personality interests with skills confidence
+- **Gap Analysis**: Identify alignment between interests and skills for better career planning
 
 ### For Career Coaches
 - **Client Dashboard**: Access coaching questions tailored to each client's RIASEC profile
@@ -64,26 +68,36 @@ Career Atlas is an intelligent career guidance system that helps users discover 
 - **Data Export**: Download assessment results for further analysis
 - **Activity Logging**: Track all administrative actions and data uploads
 
+### Progressive Web App Features (NEW!)
+- **Installable**: Add to home screen on mobile devices or install on desktop
+- **Offline Support**: Core features work without internet connection
+- **App-like Experience**: Full-screen mode, no browser UI
+- **Push Notifications**: (Coming soon) Get reminders and updates
+- **Background Sync**: (Coming soon) Sync data when connection is restored
+- **Responsive Design**: Optimized for all screen sizes
+
 ## How It Works
 
 ### The User Journey (In Simple Terms)
 
-1. **Login**: Users enter their credentials to access the system
-2. **Welcome Hub**: Get personalized greeting and choose your path
-3. **Choose Your Path**: Select whether you're an individual, coach, or manager
-4. **Take Assessments** (for individuals):
+1. **Install the App**: Click install button in browser or add to home screen on mobile
+2. **Login**: Users enter their credentials to access the system
+3. **Welcome Hub**: Get personalized greeting and choose your path
+4. **Choose Your Path**: Select whether you're an individual, coach, or manager
+5. **Take Assessments** (for individuals):
    - Answer questions about your interests (RIASEC)
    - Rate your confidence in various skills
    - Rank what's important to you at work
-5. **Get Results**: 
+6. **Get Results**: 
    - See your personality profile visualized
    - Review matched careers with explanations
    - Receive personalized learning paths
-6. **Track Progress**:
+   - NEW! Compare your RIASEC profile with skills confidence
+7. **Track Progress**:
    - Monitor learning progress
    - Update skills as you grow
    - Adjust career goals
-7. **Take Action**: Export results, start learning, or schedule coaching
+8. **Take Action**: Export results, start learning, or schedule coaching
 
 ### The Science Behind It
 
@@ -102,12 +116,15 @@ The app matches your RIASEC profile with careers that have similar profiles, ens
 ### Technology Stack
 - **Frontend**: Streamlit (Python web framework)
 - **Authentication**: Simple hardcoded authentication system
-- **Data Visualization**: Plotly for interactive charts
+- **Data Visualization**: Plotly for interactive charts and spider diagrams
 - **Data Processing**: Pandas for data manipulation
 - **AI Integration**: OpenAI (primary), Anthropic, Google AI (fallbacks)
 - **Storage**: Local file system with JSON data files
 - **Session Management**: Streamlit session state with custom manager
 - **Data Validation**: Custom CSV validator with comprehensive rule checking
+- **PWA Support**: Service Worker for offline functionality, Web App Manifest
+- **PDF Generation**: ReportLab for creating downloadable reports
+- **Image Processing**: Pillow for PWA icon generation
 
 ### Key Components
 1. **Multi-Page Application**: Modular page structure for different user flows
@@ -123,6 +140,8 @@ The app matches your RIASEC profile with careers that have similar profiles, ens
 4. **Data Management**: Structured JSON storage with versioning
 5. **Analytics Engine**: Processes and visualizes assessment results
 6. **CSV Processing**: Validation, conversion, and storage of bulk data uploads
+7. **PWA Components**: Service worker, manifest, offline caching strategy
+8. **Comparison Engine**: Skills-to-RIASEC mapping and gap analysis
 
 ## Installation
 
@@ -162,6 +181,10 @@ cp .env.example .env
 streamlit run app.py
 ```
 
+6. **Access the Application**
+   - Open your browser and go to `http://localhost:8501`
+   - For PWA installation, click the install button in your browser's address bar
+
 ## Configuration
 
 ### Authentication Setup
@@ -183,6 +206,17 @@ GOOGLE_API_KEY=your_google_key_here
 
 **Note**: The system will automatically fall back to other providers if the primary (OpenAI) is unavailable. If no API keys are configured, it will use offline fallback responses.
 
+### PWA Configuration
+
+The PWA functionality is automatically configured with:
+- **Service Worker**: Handles offline caching and background sync
+- **Web App Manifest**: Defines app metadata and appearance
+- **Icons**: Auto-generated in multiple sizes for different devices
+
+To customize PWA settings, edit:
+- `static/manifest.json`: App name, colors, display mode
+- `static/service-worker.js`: Caching strategies and offline behavior
+
 ### Data Files Structure
 
 All data is stored in the `/data` directory:
@@ -195,6 +229,10 @@ data/
 │   ├── job_roles.json          # Job role descriptions (CSV uploadable)
 │   ├── job_tasks.json          # Job tasks and functions (CSV uploadable)
 │   └── job_skills.json         # Job-skill mappings (CSV uploadable)
+├── jobskills/                   # Job skills data directory (NEW!)
+│   ├── job_skills_mapping.json # Skills to RIASEC mapping
+│   ├── skills_mapping.json     # Alternative mapping format
+│   └── *.csv                   # CSV uploads supported
 ├── skills/
 │   ├── skills_database.json     # Skills taxonomy
 │   ├── skills_master.json      # Skills master list (CSV uploadable)
@@ -217,13 +255,32 @@ data/
 ### For First-Time Users
 
 1. **Access the App**: Open your browser and go to `http://localhost:8501`
-2. **Login**: Use demo/demo123 for testing or admin/admin123 for admin access
-3. **Welcome Page**: Get oriented with the platform and choose your path
-4. **Select Your Role**: Choose Individual, Coach, or Manager
-5. **Complete Assessments**: Answer honestly - there are no right or wrong answers
-6. **Explore Careers**: Review your matched careers with detailed insights
-7. **Start Learning**: Follow personalized learning paths
-8. **Track Progress**: Monitor your development journey
+2. **Install as PWA** (Optional): Click the install button in your browser or add to home screen
+3. **Login**: Use demo/demo123 for testing or admin/admin123 for admin access
+4. **Welcome Page**: Get oriented with the platform and choose your path
+5. **Select Your Role**: Choose Individual, Coach, or Manager
+6. **Complete Assessments**: Answer honestly - there are no right or wrong answers
+7. **Explore Results**: 
+   - View your RIASEC profile
+   - Check career matches
+   - NEW! Compare your interests vs skills in the Comparison View
+8. **Start Learning**: Follow personalized learning paths
+9. **Track Progress**: Monitor your development journey
+
+### Using the Comparison View (NEW!)
+
+The Comparison View provides powerful insights by comparing your RIASEC personality scores with your skills confidence:
+
+1. **Access**: Navigate to "Compare RIASEC vs Skills" from the results page or welcome hub
+2. **Spider Diagram**: Visual comparison showing:
+   - Blue line: Your RIASEC interest scores
+   - Green line: Your skills confidence mapped to RIASEC types
+3. **Gap Analysis**: Identifies three key areas:
+   - ✅ **Aligned**: Where interests and skills match well
+   - 📈 **Development Opportunities**: High interest but lower skills
+   - 💼 **Underutilized Strengths**: Strong skills but lower interest
+4. **Career Recommendations**: Careers that match both your interests AND skills
+5. **Export Report**: Download your comparison analysis as JSON
 
 ### For Administrators
 
@@ -272,6 +329,31 @@ The admin panel supports uploading 5 types of CSV files:
 - Numeric: 1, 2, 3, 4, 5
 - Text: Basic, Intermediate, Advanced, Expert, Master, Beginner, Competent, Proficient
 
+### Progressive Web App Usage
+
+#### Installing the App
+1. **Desktop (Chrome/Edge)**:
+   - Look for install icon in address bar
+   - Click "Install Career Atlas"
+   - App opens in its own window
+
+2. **Mobile (iOS)**:
+   - Tap share button in Safari
+   - Select "Add to Home Screen"
+   - Name the app and tap "Add"
+
+3. **Mobile (Android)**:
+   - Tap menu (3 dots) in Chrome
+   - Select "Add to Home Screen"
+   - Confirm installation
+
+#### Offline Features
+When offline, you can:
+- View previously loaded assessments
+- Access cached results
+- Review saved career recommendations
+- Continue incomplete assessments (auto-saved)
+
 ## Code Structure
 
 ```
@@ -289,6 +371,7 @@ career-atlas/
 │   ├── skills_assessment.py   # Skills evaluation
 │   ├── values_assessment.py   # Values ranking
 │   ├── results.py            # Results display
+│   ├── comparison_view.py     # RIASEC vs Skills comparison (✅ NEW!)
 │   ├── coaching_dashboard.py  # Coach interface
 │   ├── manager_dashboard.py   # Manager interface
 │   └── admin_panel.py        # Admin controls (✅ Implemented)
@@ -303,11 +386,19 @@ career-atlas/
 │   ├── session_state.py      # State management (✅ Implemented)
 │   ├── csv_validator.py      # CSV validation (✅ Implemented)
 │   ├── csv_templates.py      # Template generation (✅ Implemented)
+│   ├── pwa_injector.py       # PWA functionality (✅ NEW!)
 │   └── llm_manager.py        # Legacy AI manager
+│
+├── static/                 # PWA assets (✅ NEW!)
+│   ├── manifest.json         # PWA manifest
+│   ├── service-worker.js     # Service worker
+│   ├── icon-192.png         # PWA icon
+│   └── icon-512.png         # PWA icon (large)
 │
 └── data/                   # Data files (✅ All created)
     ├── assessments/
     ├── careers/
+    ├── jobskills/           # Job skills mapping (✅ NEW!)
     ├── skills/
     ├── resources/
     ├── coaching/
@@ -414,7 +505,7 @@ career-atlas/
     - User management view
     - System settings and status
 
-13. **CSV Upload System** (New Feature)
+13. **CSV Upload System**
     - Support for 5 different CSV file types
     - Real-time validation with detailed error reporting
     - Data preview before upload
@@ -426,7 +517,7 @@ career-atlas/
     - Duplicate detection
     - UTF-8 encoding support
 
-14. **Data Validation Framework** (New Feature)
+14. **Data Validation Framework**
     - Comprehensive CSV validation rules
     - Column presence checking
     - Data type validation
@@ -436,19 +527,44 @@ career-atlas/
     - Duplicate detection within contexts
     - Row-level error reporting
 
+15. **Progressive Web App (PWA)** (NEW!)
+    - Service Worker implementation with offline caching
+    - Web App Manifest for installability
+    - Auto-generated PWA icons in multiple sizes
+    - Runtime caching strategy for API calls
+    - Offline fallback pages
+    - App-like experience on mobile and desktop
+    - Background sync preparation
+    - Cache versioning and update strategy
+
+16. **RIASEC vs Skills Comparison View** (NEW!)
+    - Interactive spider diagram using Plotly
+    - Visual comparison of RIASEC scores vs skills confidence
+    - Skills-to-RIASEC mapping based on uploaded job skills data
+    - Support for multiple data formats (JSON/CSV)
+    - Gap analysis identifying:
+      - Aligned areas (interests match skills)
+      - Development opportunities (high interest, low skills)
+      - Underutilized strengths (high skills, low interest)
+    - Career recommendations based on alignment
+    - Detailed comparison metrics and insights
+    - Export functionality for comparison reports
+    - Integration with job skills data from CSV uploads
+
 ### 🚧 In Progress
 
-- Page implementations (persona selection, assessments, results, dashboards)
-- Advanced analytics features
+- Auto-save functionality
+- PDF export with ReportLab
+- RAG-based Q&A system
 
 ### 📋 Pending Features
 
 - Email notifications
-- PDF report generation
 - Advanced data visualizations
 - Social features (mentorship matching)
-- Mobile responsiveness
-- Backup and restore functionality
+- Push notifications for PWA
+- Background sync for offline changes
+- Advanced PWA features (share target, file handling)
 
 ## API Documentation
 
@@ -610,6 +726,19 @@ Edit `data/resources/learning_resources.json`:
 }
 ```
 
+### Customizing Skills-to-RIASEC Mapping
+
+Edit or upload a file to `data/jobskills/`:
+```json
+{
+  "skill_riasec_mapping": {
+    "Data Analysis": "Investigative",
+    "Creative Design": "Artistic",
+    "Leadership": "Enterprising"
+  }
+}
+```
+
 ### Bulk Data Upload via CSV
 
 1. **Prepare your CSV file** following the expected column format
@@ -622,6 +751,27 @@ Edit `data/resources/learning_resources.json`:
    - Preview data before confirming
    - Review validation results
    - Fix any errors and re-upload
+
+### PWA Customization
+
+1. **App Appearance** - Edit `static/manifest.json`:
+```json
+{
+  "name": "Career Atlas",
+  "short_name": "Career Atlas",
+  "theme_color": "#1e3a8a",
+  "background_color": "#ffffff"
+}
+```
+
+2. **Caching Strategy** - Edit `static/service-worker.js`:
+   - Modify cache names and versions
+   - Adjust caching strategies
+   - Add/remove cached resources
+
+3. **Icons** - Replace files in `static/`:
+   - `icon-192.png`: 192x192px icon
+   - `icon-512.png`: 512x512px icon
 
 ## Troubleshooting
 
@@ -659,6 +809,25 @@ Edit `data/resources/learning_resources.json`:
   - Ensure the app has write permissions
   - Check admin activity logs for errors
 
+**Issue**: PWA not installing
+- **Solution**:
+  - Ensure HTTPS is enabled (required for PWA)
+  - Check browser compatibility
+  - Clear browser cache and try again
+  - Verify manifest.json is loading correctly
+
+**Issue**: Comparison view shows no data
+- **Solution**:
+  - Complete both RIASEC and skills assessments first
+  - Check job skills data exists in `/data/jobskills/`
+  - Upload job skills mapping via admin panel if missing
+
+**Issue**: Spider diagram not displaying
+- **Solution**:
+  - Ensure plotly is installed: `pip install plotly`
+  - Check browser console for JavaScript errors
+  - Verify assessment data is properly loaded
+
 ### Debug Mode
 
 To enable debug logging, set in your code:
@@ -672,6 +841,10 @@ SessionStateManager.debug_state()
 # Check CSV validation details
 validation_result = validator.validate(file_type, df)
 st.json(validation_result)  # Shows full validation output
+
+# Check PWA support
+from utils.pwa_injector import check_pwa_support
+check_pwa_support()  # Shows PWA compatibility info
 ```
 
 ### Getting Help
@@ -683,6 +856,8 @@ st.json(validation_result)  # Shows full validation output
 5. Use the session state debug view to inspect current state
 6. Check admin activity logs in `/data/logs/admin_activity.json`
 7. Review CSV validation error details in the upload interface
+8. Check browser console for PWA-related errors
+9. Verify job skills data format in `/data/jobskills/`
 
 ## Contributing
 
@@ -704,6 +879,8 @@ We welcome contributions! Please:
 - Validate CSV processing with edge cases
 - Add appropriate error handling
 - Log administrative actions
+- Test PWA functionality across browsers
+- Ensure offline functionality works correctly
 
 ## License
 
@@ -714,9 +891,23 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - RIASEC model by John L. Holland
 - Streamlit community for framework support
 - OpenAI, Anthropic, and Google for AI capabilities
+- Plotly for interactive data visualizations
 - Pandas for robust data processing
+- ReportLab for PDF generation capabilities
+- PWA community for offline-first patterns
 - All contributors and testers
 
 ---
 
-**Note**: This is a development version. For production use, ensure proper security measures, API rate limiting, and data protection compliance.
+**Note**: This is a development version. For production use, ensure proper security measures, API rate limiting, HTTPS for PWA, and data protection compliance.
+
+## Recent Updates
+
+### Version 2.0 (Latest)
+- ✅ **Progressive Web App**: Full PWA implementation with offline support
+- ✅ **Comparison View**: Spider diagram comparing RIASEC vs Skills confidence
+- ✅ **Enhanced Data Management**: Support for job skills data in multiple formats
+- ✅ **Improved Navigation**: Better user flow and page transitions
+- 🚧 **Coming Soon**: Auto-save, PDF export, RAG-based Q&A
+
+### Version 1.0
