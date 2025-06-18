@@ -1,0 +1,51 @@
+{
+  "name": "Career Atlas - AI Career Guidance",
+  "short_name": "Career Atlas",
+  "description": "AI-powered career assessment and guidance platform with RIASEC assessment",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e3a8a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/static/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity", "business"],
+  "screenshots": [
+    {
+      "src": "/static/screenshot-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Career Atlas Dashboard"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Start Assessment",
+      "short_name": "Assessment",
+      "description": "Begin RIASEC career assessment",
+      "url": "/?page=riasec_assessment",
+      "icons": [{ "src": "/static/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "View Results",
+      "short_name": "Results",
+      "description": "View your assessment results",
+      "url": "/?page=results",
+      "icons": [{ "src": "/static/icon-96.png", "sizes": "96x96" }]
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": []
+}

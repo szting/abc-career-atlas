@@ -6,6 +6,7 @@ Main application entry point
 import streamlit as st
 from utils.session_state import SessionStateManager
 from utils.auth_manager import AuthManager
+from utils.pwa_injector import inject_pwa_meta, check_pwa_support
 import os
 from pathlib import Path
 
@@ -17,8 +18,14 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# Inject PWA meta tags and scripts
+inject_pwa_meta()
+
 # Initialize session state
 SessionStateManager.initialize()
+
+# Check PWA support
+check_pwa_support()
 
 # Custom CSS for better styling
 st.markdown("""
@@ -141,6 +148,8 @@ def show_login_page():
         **Demo Credentials:**
         - Username: `demo` | Password: `demo123`
         - Username: `admin` | Password: `admin123`
+        
+        **📱 Install as App:** This is a Progressive Web App! Click the install button in your browser or add to home screen on mobile.
         """)
         
         # Features section
@@ -251,7 +260,8 @@ if __name__ == "__main__":
     data_dirs = [
         "data/users/profiles",
         "data/users/assessments", 
-        "data/users/progress"
+        "data/users/progress",
+        "static"  # For PWA assets
     ]
     
     for dir_path in data_dirs:
