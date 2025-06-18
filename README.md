@@ -101,7 +101,7 @@ The app matches your RIASEC profile with careers that have similar profiles, ens
 - **Data Processing**: Pandas for data manipulation
 - **AI Integration**: OpenAI (primary), Anthropic, Google AI (fallbacks)
 - **Storage**: Local file system with JSON data files
-- **Session Management**: Streamlit session state
+- **Session Management**: Streamlit session state with custom manager
 
 ### Key Components
 1. **Multi-Page Application**: Modular page structure for different user flows
@@ -112,6 +112,7 @@ The app matches your RIASEC profile with careers that have similar profiles, ens
    - AssessmentManager: RIASEC assessment engine
    - CareerManager: Career matching and exploration
    - LearningManager: Learning resources and progress tracking
+   - SessionStateManager: Centralized state management
 3. **AI Integration Layer**: Abstracted interface for multiple AI providers
 4. **Data Management**: Structured JSON storage with versioning
 5. **Analytics Engine**: Processes and visualizes assessment results
@@ -243,7 +244,7 @@ career-atlas/
 │   ├── assessment_manager.py # Assessment engine (✅ Implemented)
 │   ├── career_manager.py     # Career matching (✅ Implemented)
 │   ├── learning_manager.py   # Learning system (✅ Implemented)
-│   ├── session_state.py      # State management
+│   ├── session_state.py      # State management (✅ Implemented)
 │   └── llm_manager.py        # Legacy AI manager
 │
 └── data/                   # Data files (✅ All created)
@@ -314,6 +315,16 @@ career-atlas/
    - Learning style matching
    - Skill acquisition tracking
    - Learning analytics dashboard
+
+9. **Session State Management** (Fix #9)
+   - Centralized state management
+   - Navigation with history tracking
+   - Authentication state helpers
+   - Assessment response management
+   - Recommendation caching
+   - Filter persistence
+   - State import/export
+   - Debug utilities
 
 ### 🚧 In Progress
 
@@ -392,6 +403,18 @@ learning_manager.search_resources(query, filters)
 learning_manager.get_learning_recommendations(user_id, career_goals)
 learning_manager.track_learning_progress(user_id, resource_id, progress)
 learning_manager.get_learning_dashboard(user_id)
+```
+
+#### SessionStateManager
+```python
+# State management
+SessionStateManager.initialize()
+SessionStateManager.get(key, default)
+SessionStateManager.set(key, value)
+SessionStateManager.navigate_to(page)
+SessionStateManager.is_authenticated()
+SessionStateManager.save_assessment_response(type, question_id, response)
+SessionStateManager.cache_recommendations(careers, resources)
 ```
 
 ## Customization Guide
@@ -476,12 +499,18 @@ Edit `data/resources/learning_resources.json`:
 **Issue**: Learning recommendations empty
 - **Solution**: Complete an assessment first and ensure learning resources data file exists
 
+**Issue**: Navigation not working
+- **Solution**: Check session state initialization and ensure `SessionStateManager.initialize()` is called
+
 ### Debug Mode
 
 To enable debug logging, set in your code:
 ```python
 import streamlit as st
 st.set_option('client.showErrorDetails', True)
+
+# For session state debugging
+SessionStateManager.debug_state()
 ```
 
 ### Getting Help
@@ -490,6 +519,7 @@ st.set_option('client.showErrorDetails', True)
 2. Review the specific manager class documentation
 3. Ensure all data files are properly formatted JSON
 4. Verify API keys are correctly set
+5. Use the session state debug view to inspect current state
 
 ## Contributing
 

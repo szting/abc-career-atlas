@@ -1,138 +1,261 @@
+"""
+Career Atlas - AI-Powered Career Guidance Platform
+Main application entry point
+"""
+
 import streamlit as st
+from utils.session_state import SessionStateManager
 from utils.auth_manager import AuthManager
+import os
+from pathlib import Path
 
 # Page configuration
 st.set_page_config(
-    page_title="Career Atlas",
+    page_title="Career Atlas - AI Career Guidance",
     page_icon="🧭",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # Initialize session state
-if 'authenticated' not in st.session_state:
-    st.session_state['authenticated'] = False
-if 'current_page' not in st.session_state:
-    st.session_state['current_page'] = "Welcome"
+SessionStateManager.initialize()
 
-# Show login page if not authenticated
-if not st.session_state.get('authenticated', False):
-    st.title("🧭 Career Atlas")
-    st.subheader("Login to Continue")
+# Custom CSS for better styling
+st.markdown("""
+<style>
+    /* Main container styling */
+    .main {
+        padding: 0rem 1rem;
+    }
     
+    /* Button styling */
+    .stButton > button {
+        width: 100%;
+        border-radius: 8px;
+        height: 3rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    /* Card styling */
+    .card {
+        background-color: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        margin-bottom: 1rem;
+    }
+    
+    /* Header styling */
+    h1 {
+        color: #1e3a8a;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    h2 {
+        color: #3730a3;
+        font-weight: 600;
+    }
+    
+    h3 {
+        color: #4c1d95;
+        font-weight: 500;
+    }
+    
+    /* Progress bar styling */
+    .stProgress > div > div > div > div {
+        background-color: #3b82f6;
+    }
+    
+    /* Info box styling */
+    .stInfo {
+        background-color: #eff6ff;
+        border: 1px solid #3b82f6;
+    }
+    
+    /* Success box styling */
+    .stSuccess {
+        background-color: #f0fdf4;
+        border: 1px solid #22c55e;
+    }
+    
+    /* Warning box styling */
+    .stWarning {
+        background-color: #fffbeb;
+        border: 1px solid #f59e0b;
+    }
+    
+    /* Hide Streamlit branding */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+</style>
+""", unsafe_allow_html=True)
+
+def show_login_page():
+    """Display the login page"""
     col1, col2, col3 = st.columns([1, 2, 1])
     
     with col2:
+        st.markdown("<h1 style='text-align: center;'>🧭 Career Atlas</h1>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; color: #6b7280; font-size: 1.1rem;'>Your AI-Powered Career Guidance Platform</p>", unsafe_allow_html=True)
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Login form
         with st.form("login_form"):
-            username = st.text_input("Username")
-            password = st.text_input("Password", type="password")
-            submit = st.form_submit_button("Login", use_container_width=True)
+            st.markdown("### Sign In")
+            username = st.text_input("Username", placeholder="Enter your username")
+            password = st.text_input("Password", type="password", placeholder="Enter your password")
             
-            if submit:
-                result = AuthManager.login(username, password)
-                if result['authenticated']:
-                    # Store user info in session state
-                    st.session_state.update(result)
-                    st.success(f"Welcome, {result['name']}!")
-                    st.rerun()
+            col1, col2 = st.columns(2)
+            with col1:
+                login_button = st.form_submit_button("Sign In", use_container_width=True, type="primary")
+            with col2:
+                demo_button = st.form_submit_button("Try Demo", use_container_width=True)
+            
+            if login_button:
+                if username and password:
+                    if AuthManager.login(username, password):
+                        st.success("Login successful! Redirecting...")
+                        st.rerun()
+                    else:
+                        st.error("Invalid username or password")
                 else:
-                    st.error("Invalid username or password")
+                    st.warning("Please enter both username and password")
+            
+            if demo_button:
+                if AuthManager.login("demo", "demo123"):
+                    st.success("Logged in as demo user! Redirecting...")
+                    st.rerun()
         
-        st.divider()
-        
-        # Show demo credentials
+        # Info box
+        st.markdown("<br>", unsafe_allow_html=True)
         st.info("""
         **Demo Credentials:**
-        - Username: `demo` / Password: `demo123` (for testing)
-        - Username: `admin` / Password: `admin123` (for admin access)
+        - Username: `demo` | Password: `demo123`
+        - Username: `admin` | Password: `admin123`
         """)
+        
+        # Features section
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("### 🌟 Key Features")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            <div class='card'>
+                <h4>🎯 RIASEC Assessment</h4>
+                <p>Discover your Holland Code through our comprehensive personality assessment</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown("""
+            <div class='card'>
+                <h4>💼 Career Matching</h4>
+                <p>Get AI-powered career recommendations tailored to your unique profile</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown("""
+            <div class='card'>
+                <h4>📚 Learning Paths</h4>
+                <p>Receive personalized learning recommendations to achieve your career goals</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown("""
+            <div class='card'>
+                <h4>📊 Progress Tracking</h4>
+                <p>Monitor your development journey with detailed analytics and insights</p>
+            </div>
+            """, unsafe_allow_html=True)
 
-else:
-    # User is authenticated - show main app
-    # Sidebar
-    with st.sidebar:
-        st.write(f"Welcome **{st.session_state['name']}**")
-        
-        # Show role badge
-        if st.session_state['role'] == 'admin':
-            st.success("🔐 Admin Access")
-        
-        st.divider()
-        
-        # Navigation
-        st.subheader("Navigation")
-        
-        # Create navigation buttons
-        if st.button("🏠 Welcome", use_container_width=True, type="secondary" if st.session_state['current_page'] != "Welcome" else "primary"):
-            st.session_state['current_page'] = "Welcome"
-            st.rerun()
-            
-        if st.button("📝 Assessment", use_container_width=True, type="secondary" if st.session_state['current_page'] != "Assessment" else "primary"):
-            st.session_state['current_page'] = "Assessment"
-            st.rerun()
-            
-        if st.button("📊 Results", use_container_width=True, type="secondary" if st.session_state['current_page'] != "Results" else "primary"):
-            st.session_state['current_page'] = "Results"
-            st.rerun()
-        
-        # Admin only pages
-        if st.session_state['role'] == 'admin':
-            st.divider()
-            st.subheader("Admin Tools")
-            
-            if st.button("👥 User Management", use_container_width=True, type="secondary" if st.session_state['current_page'] != "User Management" else "primary"):
-                st.session_state['current_page'] = "User Management"
-                st.rerun()
-                
-            if st.button("📈 Analytics", use_container_width=True, type="secondary" if st.session_state['current_page'] != "Analytics" else "primary"):
-                st.session_state['current_page'] = "Analytics"
-                st.rerun()
-        
-        st.divider()
-        
-        # Logout button
-        if st.button("🚪 Logout", use_container_width=True, type="secondary"):
+def show_main_app():
+    """Display the main application based on current page"""
+    current_page = SessionStateManager.get('current_page', 'welcome')
+    
+    # Create a header with user info and logout
+    col1, col2, col3 = st.columns([6, 2, 1])
+    with col1:
+        user_info = SessionStateManager.get_user_info()
+        st.markdown(f"### Welcome, {user_info.get('name', user_info.get('username', 'User'))}! 👋")
+    
+    with col3:
+        if st.button("Logout", type="secondary"):
             AuthManager.logout()
-            st.session_state['current_page'] = "Welcome"
             st.rerun()
     
-    # Main content area - Page routing
-    page = st.session_state['current_page']
+    st.markdown("---")
     
+    # Dynamic page loading
     try:
-        if page == "Welcome":
+        if current_page == 'welcome':
             from pages.welcome import show_welcome
             show_welcome()
-        elif page == "Assessment":
-            from pages.assessment import show_assessment
-            show_assessment()
-        elif page == "Results":
+        elif current_page == 'persona_selection':
+            from pages.persona_selection import show_persona_selection
+            show_persona_selection()
+        elif current_page == 'riasec_assessment':
+            from pages.riasec_assessment import show_riasec_assessment
+            show_riasec_assessment()
+        elif current_page == 'skills_assessment':
+            from pages.skills_assessment import show_skills_assessment
+            show_skills_assessment()
+        elif current_page == 'values_assessment':
+            from pages.values_assessment import show_values_assessment
+            show_values_assessment()
+        elif current_page == 'results':
             from pages.results import show_results
             show_results()
-        elif page == "User Management" and st.session_state['role'] == 'admin':
-            st.title("👥 User Management")
-            st.info("User management features coming soon!")
-            st.write("This page will allow admins to:")
-            st.write("- View all users")
-            st.write("- Manage user accounts")
-            st.write("- View user assessment history")
-            st.write("- Export user data")
-        elif page == "Analytics" and st.session_state['role'] == 'admin':
-            st.title("📈 Analytics Dashboard")
-            st.info("Analytics features coming soon!")
-            st.write("This page will show:")
-            st.write("- Usage statistics")
-            st.write("- Assessment completion rates")
-            st.write("- Popular career paths")
-            st.write("- User engagement metrics")
+        elif current_page == 'coaching_dashboard':
+            from pages.coaching_dashboard import show_coaching_dashboard
+            show_coaching_dashboard()
+        elif current_page == 'manager_dashboard':
+            from pages.manager_dashboard import show_manager_dashboard
+            show_manager_dashboard()
+        elif current_page == 'admin_panel':
+            from pages.admin_panel import show_admin_panel
+            show_admin_panel()
         else:
-            st.error(f"Page '{page}' not found or you don't have permission to access it.")
-            st.session_state['current_page'] = "Welcome"
-            st.rerun()
-            
+            st.error(f"Page '{current_page}' not found")
+            if st.button("Go to Welcome"):
+                SessionStateManager.navigate_to('welcome')
     except ImportError as e:
-        st.error(f"Error loading page: {str(e)}")
-        st.info("Please ensure all required files are present in the pages directory.")
+        st.error(f"Page module not found: {e}")
+        st.info("This page is under development. Please check back later.")
+        if st.button("Go to Welcome"):
+            SessionStateManager.navigate_to('welcome')
     except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
-        st.info("Please try refreshing the page or contact support if the issue persists.")
+        st.error(f"An error occurred: {e}")
+        if st.button("Go to Welcome"):
+            SessionStateManager.navigate_to('welcome')
+
+def main():
+    """Main application entry point"""
+    # Check authentication
+    if not SessionStateManager.is_authenticated():
+        show_login_page()
+    else:
+        show_main_app()
+
+if __name__ == "__main__":
+    # Ensure data directories exist
+    data_dirs = [
+        "data/users/profiles",
+        "data/users/assessments", 
+        "data/users/progress"
+    ]
+    
+    for dir_path in data_dirs:
+        Path(dir_path).mkdir(parents=True, exist_ok=True)
+    
+    # Run the app
+    main()
