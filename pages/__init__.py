@@ -1,1 +1,1 @@
-# Pages module initialization
+# Pages module for Career Atlas
