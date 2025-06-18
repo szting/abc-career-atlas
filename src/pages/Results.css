@@ -1,0 +1,204 @@
+.results {
+  padding: 2rem 0;
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.results-header h1 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.results-header p {
+  color: #7f8c8d;
+  font-size: 1.125rem;
+}
+
+.results-empty {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.results-empty h2 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.results-empty p {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background-color: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.cta-button:hover {
+  background-color: #2980b9;
+}
+
+.charts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.chart-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.chart-card h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.top-interests {
+  margin-bottom: 3rem;
+}
+
+.top-interests h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.interest-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.interest-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.interest-card .rank {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #3498db;
+  color: white;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.interest-card h3 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.interest-card p {
+  color: #7f8c8d;
+  margin-bottom: 1rem;
+}
+
+.interest-card .score {
+  color: #3498db;
+  font-weight: 500;
+}
+
+.career-suggestions {
+  background: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.career-suggestions h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+}
+
+.career-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.career-category h4 {
+  color: #3498db;
+  margin-bottom: 0.5rem;
+}
+
+.career-category ul {
+  list-style: none;
+  padding: 0;
+}
+
+.career-category li {
+  padding: 0.25rem 0;
+  color: #7f8c8d;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: #2c3e50;
+}
+
+.action-button:hover {
+  background-color: #f8f9fa;
+}
+
+.action-button.primary {
+  background-color: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+.action-button.primary:hover {
+  background-color: #2980b9;
+}
+
+@media (max-width: 768px) {
+  .charts-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .interest-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .career-grid {
+    grid-template-columns: 1fr;
+  }
+}
