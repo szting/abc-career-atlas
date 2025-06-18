@@ -65,20 +65,21 @@ Career Atlas is an intelligent career guidance system that helps users discover 
 ### The User Journey (In Simple Terms)
 
 1. **Login**: Users enter their credentials to access the system
-2. **Choose Your Path**: Select whether you're an individual, coach, or manager
-3. **Take Assessments** (for individuals):
+2. **Welcome Hub**: Get personalized greeting and choose your path
+3. **Choose Your Path**: Select whether you're an individual, coach, or manager
+4. **Take Assessments** (for individuals):
    - Answer questions about your interests (RIASEC)
    - Rate your confidence in various skills
    - Rank what's important to you at work
-4. **Get Results**: 
+5. **Get Results**: 
    - See your personality profile visualized
    - Review matched careers with explanations
    - Receive personalized learning paths
-5. **Track Progress**:
+6. **Track Progress**:
    - Monitor learning progress
    - Update skills as you grow
    - Adjust career goals
-6. **Take Action**: Export results, start learning, or schedule coaching
+7. **Take Action**: Export results, start learning, or schedule coaching
 
 ### The Science Behind It
 
@@ -204,11 +205,12 @@ data/
 
 1. **Access the App**: Open your browser and go to `http://localhost:8501`
 2. **Login**: Use demo/demo123 for testing or admin/admin123 for admin access
-3. **Select Your Role**: Choose Individual, Coach, or Manager
-4. **Complete Assessments**: Answer honestly - there are no right or wrong answers
-5. **Explore Careers**: Review your matched careers with detailed insights
-6. **Start Learning**: Follow personalized learning paths
-7. **Track Progress**: Monitor your development journey
+3. **Welcome Page**: Get oriented with the platform and choose your path
+4. **Select Your Role**: Choose Individual, Coach, or Manager
+5. **Complete Assessments**: Answer honestly - there are no right or wrong answers
+6. **Explore Careers**: Review your matched careers with detailed insights
+7. **Start Learning**: Follow personalized learning paths
+8. **Track Progress**: Monitor your development journey
 
 ### For Administrators
 
@@ -227,8 +229,9 @@ career-atlas/
 ├── .env.example           # Environment variables template
 │
 ├── pages/                  # Streamlit pages
+│   ├── __init__.py           # Pages module init (✅ Implemented)
 │   ├── persona_selection.py    # Role selection
-│   ├── welcome.py             # Welcome screen
+│   ├── welcome.py             # Welcome screen (✅ Implemented)
 │   ├── riasec_assessment.py   # RIASEC test
 │   ├── skills_assessment.py   # Skills evaluation
 │   ├── values_assessment.py   # Values ranking
@@ -335,9 +338,21 @@ career-atlas/
     - Automatic directory creation
     - Graceful handling of missing pages
 
+11. **Welcome Page** (Fix #11)
+    - Personalized greeting system (new vs returning users)
+    - Progress dashboard showing assessment and learning metrics
+    - Clear value proposition and feature explanations
+    - Multiple navigation paths based on user status
+    - Quick tips sidebar for best practices
+    - Feature highlights section
+    - Path selection for different user types (Individual/Coach/Manager)
+    - Admin panel access for administrators
+    - FAQ and RIASEC education sections
+    - Automatic user profile creation
+
 ### 🚧 In Progress
 
-- Page implementations (welcome, assessments, results, dashboards)
+- Page implementations (persona selection, assessments, results, dashboards)
 - UI/UX enhancements
 - Advanced analytics features
 
