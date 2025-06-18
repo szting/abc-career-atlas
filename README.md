@@ -29,6 +29,7 @@ Career Atlas is an intelligent career guidance system that helps users discover 
 - **Comprehensive**: Covers personality, skills, values, career matching, and learning paths
 - **Smart Learning**: Personalized learning recommendations with progress tracking
 - **Data-Driven**: Advanced analytics and insights for career development
+- **CSV Data Management**: Bulk upload capability for job roles, skills, and competencies
 
 ## Features
 
@@ -56,9 +57,12 @@ Career Atlas is an intelligent career guidance system that helps users discover 
 
 ### For Administrators
 - **Content Management**: Customize assessment questions and career databases
+- **CSV Data Upload**: Bulk import job roles, skills, and competencies with validation
+- **Template Downloads**: Access pre-formatted CSV templates for easy data preparation
 - **Analytics Dashboard**: View usage statistics and assessment trends
 - **API Configuration**: Set up AI providers and authentication
 - **Data Export**: Download assessment results for further analysis
+- **Activity Logging**: Track all administrative actions and data uploads
 
 ## How It Works
 
@@ -103,13 +107,14 @@ The app matches your RIASEC profile with careers that have similar profiles, ens
 - **AI Integration**: OpenAI (primary), Anthropic, Google AI (fallbacks)
 - **Storage**: Local file system with JSON data files
 - **Session Management**: Streamlit session state with custom manager
+- **Data Validation**: Custom CSV validator with comprehensive rule checking
 
 ### Key Components
 1. **Multi-Page Application**: Modular page structure for different user flows
 2. **Manager Classes**: Specialized managers for different functionalities
    - AuthManager: Authentication and user management
    - DataManager: Data persistence and retrieval
-   - AIManager: Multi-provider AI integration
+   - AIManager: Multi-provider AI integration with fallback
    - AssessmentManager: RIASEC assessment engine
    - CareerManager: Career matching and exploration
    - LearningManager: Learning resources and progress tracking
@@ -117,6 +122,7 @@ The app matches your RIASEC profile with careers that have similar profiles, ens
 3. **AI Integration Layer**: Abstracted interface for multiple AI providers
 4. **Data Management**: Structured JSON storage with versioning
 5. **Analytics Engine**: Processes and visualizes assessment results
+6. **CSV Processing**: Validation, conversion, and storage of bulk data uploads
 
 ## Installation
 
@@ -185,14 +191,21 @@ data/
 ├── assessments/
 │   └── riasec_questions.json    # RIASEC assessment questions
 ├── careers/
-│   └── careers_database.json    # Career information database
+│   ├── careers_database.json    # Career information database
+│   ├── job_roles.json          # Job role descriptions (CSV uploadable)
+│   ├── job_tasks.json          # Job tasks and functions (CSV uploadable)
+│   └── job_skills.json         # Job-skill mappings (CSV uploadable)
 ├── skills/
-│   └── skills_database.json     # Skills taxonomy
+│   ├── skills_database.json     # Skills taxonomy
+│   ├── skills_master.json      # Skills master list (CSV uploadable)
+│   └── skills_ka.json          # Knowledge & abilities (CSV uploadable)
 ├── resources/
 │   ├── learning_resources.json  # Learning materials
 │   └── courses_database.json    # Course catalog
 ├── coaching/
 │   └── coaching_questions.json  # Coaching conversation starters
+├── logs/
+│   └── admin_activity.json     # Administrative action logs
 └── users/                       # User data (auto-created)
     ├── profiles/               # User profiles
     ├── assessments/           # Assessment results
@@ -215,9 +228,49 @@ data/
 ### For Administrators
 
 1. **Access Admin Panel**: Login with admin credentials
-2. **Manage Data**: Update questions, careers, and resources
-3. **Configure APIs**: Set up AI providers in .env file
-4. **Monitor Usage**: Check analytics and user progress
+2. **Dashboard View**: Monitor system metrics and recent activity
+3. **CSV Upload**: 
+   - Select file type from dropdown
+   - Review expected column format
+   - Download template for reference
+   - Upload CSV file
+   - Preview data and validation results
+   - Confirm upload to replace existing data
+4. **User Management**: View current users and their status
+5. **System Settings**: Check system health and data file status
+
+### CSV Upload Guide
+
+The admin panel supports uploading 5 types of CSV files:
+
+#### 1. Job Role Description
+- **Columns**: Sector, Track, Job Role, Job Role Description
+- **Purpose**: Define job roles and their descriptions
+- **Validation**: Checks for duplicates within sector/track
+
+#### 2. Job Role-Critical Work Function-Key Tasks
+- **Columns**: Sector, Track, Job Role, Critical Work Function, Key Tasks
+- **Purpose**: Map job roles to their key functions and tasks
+- **Validation**: Ensures job roles exist in the system
+
+#### 3. Job Role-Skills
+- **Columns**: Sector, Track, Job Role, TSC_CCS Title, TSC_CCS Type, Proficiency Level
+- **Purpose**: Define skills required for each job role
+- **Validation**: Checks job role and skill existence, validates proficiency levels
+
+#### 4. TSC_CCS_Key (Skills Master)
+- **Columns**: TSC Code, Sector, TSC_CCS Category, TSC_CCS Title, TSC_CCS Description, TSC_CCS Type
+- **Purpose**: Master list of all skills in the system
+- **Validation**: Ensures unique TSC codes and validates skill types
+
+#### 5. TSC_CCS_K&A (Knowledge & Abilities)
+- **Columns**: Sector, TSC_CCS Category, TSC_CCS Title, TSC_CCS Description, Proficiency Level, Proficiency Description, Knowledge-Ability Classification, Knowledge-Ability Items
+- **Purpose**: Detailed breakdown of knowledge and abilities for skills
+- **Validation**: Checks skill existence and classification values
+
+**Proficiency Levels**: The system accepts both numeric (1-5) and text formats:
+- Numeric: 1, 2, 3, 4, 5
+- Text: Basic, Intermediate, Advanced, Expert, Master, Beginner, Competent, Proficient
 
 ## Code Structure
 
@@ -238,7 +291,7 @@ career-atlas/
 │   ├── results.py            # Results display
 │   ├── coaching_dashboard.py  # Coach interface
 │   ├── manager_dashboard.py   # Manager interface
-│   └── admin_panel.py        # Admin controls
+│   └── admin_panel.py        # Admin controls (✅ Implemented)
 │
 ├── utils/                  # Utility modules
 │   ├── auth_manager.py       # Authentication (✅ Implemented)
@@ -248,6 +301,8 @@ career-atlas/
 │   ├── career_manager.py     # Career matching (✅ Implemented)
 │   ├── learning_manager.py   # Learning system (✅ Implemented)
 │   ├── session_state.py      # State management (✅ Implemented)
+│   ├── csv_validator.py      # CSV validation (✅ Implemented)
+│   ├── csv_templates.py      # Template generation (✅ Implemented)
 │   └── llm_manager.py        # Legacy AI manager
 │
 └── data/                   # Data files (✅ All created)
@@ -256,6 +311,7 @@ career-atlas/
     ├── skills/
     ├── resources/
     ├── coaching/
+    ├── logs/
     └── users/
 ```
 
@@ -294,6 +350,7 @@ career-atlas/
    - Development planning
    - Interview preparation
    - Skills gap analysis
+   - RIASEC-tailored coaching questions
 
 6. **Assessment Engine** (Fix #6)
    - RIASEC scoring algorithm (0-100 scale)
@@ -350,10 +407,38 @@ career-atlas/
     - FAQ and RIASEC education sections
     - Automatic user profile creation
 
+12. **Admin Panel** (Fix #12)
+    - Complete admin interface with 4 tabs
+    - Dashboard with system metrics
+    - CSV upload functionality with validation
+    - User management view
+    - System settings and status
+
+13. **CSV Upload System** (New Feature)
+    - Support for 5 different CSV file types
+    - Real-time validation with detailed error reporting
+    - Data preview before upload
+    - Template generation with sample data
+    - Automatic JSON conversion and storage
+    - Activity logging for audit trail
+    - Support for both numeric and text proficiency levels
+    - Referential integrity checking
+    - Duplicate detection
+    - UTF-8 encoding support
+
+14. **Data Validation Framework** (New Feature)
+    - Comprehensive CSV validation rules
+    - Column presence checking
+    - Data type validation
+    - Referential integrity between files
+    - Custom format validation (TSC codes)
+    - Proficiency level validation (numeric and text)
+    - Duplicate detection within contexts
+    - Row-level error reporting
+
 ### 🚧 In Progress
 
 - Page implementations (persona selection, assessments, results, dashboards)
-- UI/UX enhancements
 - Advanced analytics features
 
 ### 📋 Pending Features
@@ -363,6 +448,7 @@ career-atlas/
 - Advanced data visualizations
 - Social features (mentorship matching)
 - Mobile responsiveness
+- Backup and restore functionality
 
 ## API Documentation
 
@@ -400,6 +486,10 @@ ai_manager.generate_career_recommendations(riasec_scores, additional_info)
 ai_manager.generate_development_plan(riasec_scores, selected_careers, additional_info)
 ai_manager.generate_interview_questions(career_title, level)
 ai_manager.analyze_skills_gap(current_skills, target_career, riasec_scores)
+
+# RIASEC-tailored coaching
+ai_manager.generate_coaching_questions_for_coachee(coachee_riasec_scores, additional_context)
+ai_manager.generate_manager_questions_for_team_member(team_member_riasec_scores, additional_context)
 ```
 
 #### AssessmentManager
@@ -439,6 +529,22 @@ SessionStateManager.navigate_to(page)
 SessionStateManager.is_authenticated()
 SessionStateManager.save_assessment_response(type, question_id, response)
 SessionStateManager.cache_recommendations(careers, resources)
+```
+
+#### CSVValidator
+```python
+# CSV validation
+validator = CSVValidator()
+validation_result = validator.validate(file_type, dataframe)
+# Returns: {'valid': bool, 'errors': list, 'details': list, 'summary': dict}
+```
+
+#### CSVTemplateGenerator
+```python
+# Template generation
+generator = CSVTemplateGenerator()
+template_df = generator.generate_template(file_type)
+# Returns: pandas DataFrame with sample data
 ```
 
 ## Customization Guide
@@ -504,6 +610,19 @@ Edit `data/resources/learning_resources.json`:
 }
 ```
 
+### Bulk Data Upload via CSV
+
+1. **Prepare your CSV file** following the expected column format
+2. **Download a template** from the admin panel for reference
+3. **Ensure data consistency**:
+   - Job roles must exist before mapping skills
+   - Skills must exist in master before using in mappings
+   - Use consistent naming across files
+4. **Upload through admin panel**:
+   - Preview data before confirming
+   - Review validation results
+   - Fix any errors and re-upload
+
 ## Troubleshooting
 
 ### Common Issues and Solutions
@@ -526,6 +645,20 @@ Edit `data/resources/learning_resources.json`:
 **Issue**: Navigation not working
 - **Solution**: Check session state initialization and ensure `SessionStateManager.initialize()` is called
 
+**Issue**: CSV upload fails validation
+- **Solution**: 
+  - Check column names match exactly (case-sensitive)
+  - Ensure no empty required fields
+  - Verify referential integrity (job roles exist, skills exist)
+  - Use UTF-8 encoding for the CSV file
+  - Download and review the template for correct format
+
+**Issue**: CSV upload succeeds but data doesn't appear
+- **Solution**: 
+  - Check the appropriate JSON file was created in `/data/` directory
+  - Ensure the app has write permissions
+  - Check admin activity logs for errors
+
 ### Debug Mode
 
 To enable debug logging, set in your code:
@@ -535,6 +668,10 @@ st.set_option('client.showErrorDetails', True)
 
 # For session state debugging
 SessionStateManager.debug_state()
+
+# Check CSV validation details
+validation_result = validator.validate(file_type, df)
+st.json(validation_result)  # Shows full validation output
 ```
 
 ### Getting Help
@@ -544,6 +681,8 @@ SessionStateManager.debug_state()
 3. Ensure all data files are properly formatted JSON
 4. Verify API keys are correctly set
 5. Use the session state debug view to inspect current state
+6. Check admin activity logs in `/data/logs/admin_activity.json`
+7. Review CSV validation error details in the upload interface
 
 ## Contributing
 
@@ -562,6 +701,9 @@ We welcome contributions! Please:
 - Update README for new features
 - Ensure backward compatibility
 - Test with both user roles
+- Validate CSV processing with edge cases
+- Add appropriate error handling
+- Log administrative actions
 
 ## License
 
@@ -572,6 +714,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - RIASEC model by John L. Holland
 - Streamlit community for framework support
 - OpenAI, Anthropic, and Google for AI capabilities
+- Pandas for robust data processing
 - All contributors and testers
 
 ---
