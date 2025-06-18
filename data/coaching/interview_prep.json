@@ -1,0 +1,91 @@
+{
+  "topic": "Interview Preparation",
+  "description": "Comprehensive guide for job interview success",
+  "modules": [
+    {
+      "title": "Interview Basics",
+      "content": [
+        {
+          "type": "overview",
+          "text": "Understanding different interview types and what to expect"
+        },
+        {
+          "type": "tips",
+          "items": [
+            "Research the company thoroughly",
+            "Prepare your elevator pitch",
+            "Practice common questions",
+            "Prepare questions to ask",
+            "Plan your outfit"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Common Interview Questions",
+      "content": [
+        {
+          "question": "Tell me about yourself",
+          "framework": "Present-Past-Future method",
+          "example": "I'm currently a [role] at [company] where I [achievement]. Previously, I [past experience]. I'm looking to [future goal]."
+        },
+        {
+          "question": "Why do you want to work here?",
+          "framework": "Company-Role-Growth alignment",
+          "example": "I'm impressed by [company aspect]. This role aligns with my skills in [area]. I see opportunities to [contribution]."
+        },
+        {
+          "question": "What are your strengths?",
+          "framework": "STAR method examples",
+          "example": "One of my key strengths is [strength]. For example, [specific situation and result]."
+        }
+      ]
+    },
+    {
+      "title": "Behavioral Questions",
+      "content": [
+        {
+          "type": "methodology",
+          "name": "STAR Method",
+          "components": [
+            "Situation: Set the context",
+            "Task: Explain the challenge",
+            "Action: Describe what you did",
+            "Result: Share the outcome"
+          ]
+        },
+        {
+          "type": "practice_scenarios",
+          "scenarios": [
+            "Describe a time you overcame a challenge",
+            "Tell me about a conflict you resolved",
+            "Give an example of leadership",
+            "Describe a failure and what you learned"
+          ]
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "type": "checklist",
+      "title": "Interview Day Checklist",
+      "items": [
+        "Multiple copies of resume",
+        "Portfolio or work samples",
+        "List of references",
+        "Questions to ask",
+        "Directions to location"
+      ]
+    },
+    {
+      "type": "practice_tools",
+      "tools": [
+        "Mock interview generator",
+        "Question bank by industry",
+        "Video practice platform",
+        "Feedback rubric"
+      ]
+    }
+  ]
+}

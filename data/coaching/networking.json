@@ -1,0 +1,93 @@
+{
+  "topic": "Professional Networking",
+  "description": "Build and leverage professional relationships",
+  "modules": [
+    {
+      "title": "Networking Fundamentals",
+      "content": [
+        {
+          "type": "overview",
+          "text": "Networking is about building mutually beneficial professional relationships"
+        },
+        {
+          "type": "mindset_shifts",
+          "items": [
+            "From 'asking for favors' to 'building relationships'",
+            "From 'selling yourself' to 'finding mutual value'",
+            "From 'quantity' to 'quality connections'",
+            "From 'immediate results' to 'long-term investment'"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "LinkedIn Optimization",
+      "content": [
+        {
+          "type": "profile_essentials",
+          "sections": [
+            "Professional headline that showcases value",
+            "Compelling summary with keywords",
+            "Complete work history with achievements",
+            "Skills endorsed by connections",
+            "Professional photo and banner"
+          ]
+        },
+        {
+          "type": "engagement_strategies",
+          "activities": [
+            "Share industry insights weekly",
+            "Comment thoughtfully on posts",
+            "Publish articles in your expertise area",
+            "Congratulate connections on achievements",
+            "Join and participate in relevant groups"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Networking Events",
+      "content": [
+        {
+          "type": "preparation",
+          "checklist": [
+            "Research attendees and speakers",
+            "Prepare elevator pitch",
+            "Set specific goals",
+            "Bring business cards",
+            "Plan conversation starters"
+          ]
+        },
+        {
+          "type": "conversation_framework",
+          "steps": [
+            "Open with genuine interest",
+            "Ask open-ended questions",
+            "Listen actively",
+            "Find common ground",
+            "Exchange contact information",
+            "Follow up within 48 hours"
+          ]
+        }
+      ]
+    }
+  ],
+  "action_plans": [
+    {
+      "timeframe": "Weekly",
+      "activities": [
+        "Reach out to 2 new connections",
+        "Engage with 10 LinkedIn posts",
+        "Share 1 valuable resource"
+      ]
+    },
+    {
+      "timeframe": "Monthly",
+      "activities": [
+        "Attend 1 networking event",
+        "Schedule 2 coffee chats",
+        "Update LinkedIn profile"
+      ]
+    }
+  ]
+}

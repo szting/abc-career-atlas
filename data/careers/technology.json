@@ -1,0 +1,103 @@
+{
+  "category": "Technology",
+  "description": "Careers in software, IT, and emerging technologies",
+  "growth_outlook": "Very High",
+  "careers": [
+    {
+      "title": "Software Developer",
+      "description": "Design, develop, and maintain software applications and systems",
+      "riasec_codes": ["I", "R", "C"],
+      "required_skills": [
+        "Programming languages (Python, Java, JavaScript)",
+        "Problem-solving",
+        "Version control (Git)",
+        "Database management",
+        "Agile methodologies"
+      ],
+      "education_requirements": "Bachelor's degree in Computer Science or related field",
+      "salary_range": {
+        "entry": "$70,000",
+        "mid": "$105,000",
+        "senior": "$150,000+"
+      },
+      "growth_rate": "25%",
+      "work_environment": "Office or remote, collaborative teams",
+      "career_path": [
+        "Junior Developer",
+        "Software Developer",
+        "Senior Developer",
+        "Tech Lead",
+        "Software Architect"
+      ],
+      "certifications": [
+        "AWS Certified Developer",
+        "Microsoft Azure Developer",
+        "Google Cloud Professional"
+      ]
+    },
+    {
+      "title": "Data Scientist",
+      "description": "Analyze complex data to help organizations make better decisions",
+      "riasec_codes": ["I", "C", "R"],
+      "required_skills": [
+        "Statistical analysis",
+        "Machine learning",
+        "Python/R programming",
+        "Data visualization",
+        "SQL"
+      ],
+      "education_requirements": "Bachelor's or Master's in Data Science, Statistics, or related field",
+      "salary_range": {
+        "entry": "$80,000",
+        "mid": "$120,000",
+        "senior": "$170,000+"
+      },
+      "growth_rate": "35%",
+      "work_environment": "Office or remote, cross-functional teams",
+      "career_path": [
+        "Data Analyst",
+        "Data Scientist",
+        "Senior Data Scientist",
+        "Lead Data Scientist",
+        "Chief Data Officer"
+      ],
+      "certifications": [
+        "Google Data Analytics Certificate",
+        "IBM Data Science Professional",
+        "SAS Certified Data Scientist"
+      ]
+    },
+    {
+      "title": "Cybersecurity Analyst",
+      "description": "Protect organizations from digital attacks and security breaches",
+      "riasec_codes": ["I", "R", "C"],
+      "required_skills": [
+        "Network security",
+        "Threat analysis",
+        "Security tools (SIEM, IDS/IPS)",
+        "Risk assessment",
+        "Incident response"
+      ],
+      "education_requirements": "Bachelor's in Cybersecurity, IT, or related field",
+      "salary_range": {
+        "entry": "$65,000",
+        "mid": "$95,000",
+        "senior": "$140,000+"
+      },
+      "growth_rate": "32%",
+      "work_environment": "Office, SOC environments, on-call duties",
+      "career_path": [
+        "Security Analyst I",
+        "Security Analyst II",
+        "Senior Security Analyst",
+        "Security Architect",
+        "CISO"
+      ],
+      "certifications": [
+        "CompTIA Security+",
+        "CISSP",
+        "CEH (Certified Ethical Hacker)"
+      ]
+    }
+  ]
+}

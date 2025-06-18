@@ -1,0 +1,40 @@
+{
+  "id": "professional",
+  "name": "Mid-Career Professional",
+  "description": "Experienced professionals seeking growth or transition",
+  "age_range": "26-45",
+  "characteristics": [
+    "5-15 years of experience",
+    "Established in career",
+    "Seeking advancement or change",
+    "Has specialized skills",
+    "Family responsibilities"
+  ],
+  "common_goals": [
+    "Career advancement",
+    "Higher salary",
+    "Better work-life balance",
+    "Leadership roles",
+    "Career pivot"
+  ],
+  "challenges": [
+    "Career plateau",
+    "Work-life balance",
+    "Skill obsolescence",
+    "Limited growth opportunities",
+    "Industry changes"
+  ],
+  "recommended_assessments": [
+    "riasec",
+    "leadership_style",
+    "career_anchors",
+    "360_feedback"
+  ],
+  "coaching_topics": [
+    "leadership_development",
+    "career_transition",
+    "negotiation_skills",
+    "personal_branding",
+    "strategic_networking"
+  ]
+}

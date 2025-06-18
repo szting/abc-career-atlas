@@ -1,0 +1,285 @@
+{
+  "assessment_type": "RIASEC",
+  "version": "2.0",
+  "instructions": "Rate each statement on a scale of 1-5, where 1 = Strongly Disagree and 5 = Strongly Agree",
+  "categories": {
+    "Realistic": {
+      "description": "Practical, hands-on, physical activities",
+      "questions": [
+        {
+          "id": "R1",
+          "text": "I enjoy working with tools and machines",
+          "weight": 1.0
+        },
+        {
+          "id": "R2",
+          "text": "I like to build or fix things with my hands",
+          "weight": 1.0
+        },
+        {
+          "id": "R3",
+          "text": "I prefer outdoor activities over indoor ones",
+          "weight": 0.8
+        },
+        {
+          "id": "R4",
+          "text": "I enjoy physical activities and sports",
+          "weight": 0.7
+        },
+        {
+          "id": "R5",
+          "text": "I like working with plants or animals",
+          "weight": 0.9
+        },
+        {
+          "id": "R6",
+          "text": "I prefer concrete tasks over abstract concepts",
+          "weight": 1.0
+        },
+        {
+          "id": "R7",
+          "text": "I enjoy learning how mechanical things work",
+          "weight": 0.9
+        },
+        {
+          "id": "R8",
+          "text": "I like projects where I can see tangible results",
+          "weight": 0.8
+        }
+      ]
+    },
+    "Investigative": {
+      "description": "Analytical, intellectual, scientific thinking",
+      "questions": [
+        {
+          "id": "I1",
+          "text": "I enjoy solving complex problems",
+          "weight": 1.0
+        },
+        {
+          "id": "I2",
+          "text": "I like to understand how things work",
+          "weight": 1.0
+        },
+        {
+          "id": "I3",
+          "text": "I enjoy conducting research and experiments",
+          "weight": 1.0
+        },
+        {
+          "id": "I4",
+          "text": "I prefer working with ideas rather than people",
+          "weight": 0.8
+        },
+        {
+          "id": "I5",
+          "text": "I like analyzing data and information",
+          "weight": 1.0
+        },
+        {
+          "id": "I6",
+          "text": "I enjoy learning about scientific discoveries",
+          "weight": 0.9
+        },
+        {
+          "id": "I7",
+          "text": "I like to question and investigate claims",
+          "weight": 0.9
+        },
+        {
+          "id": "I8",
+          "text": "I prefer logical thinking over emotional responses",
+          "weight": 0.7
+        }
+      ]
+    },
+    "Artistic": {
+      "description": "Creative, expressive, innovative activities",
+      "questions": [
+        {
+          "id": "A1",
+          "text": "I enjoy creative activities like art, music, or writing",
+          "weight": 1.0
+        },
+        {
+          "id": "A2",
+          "text": "I like to express myself through various mediums",
+          "weight": 1.0
+        },
+        {
+          "id": "A3",
+          "text": "I prefer unstructured, flexible environments",
+          "weight": 0.8
+        },
+        {
+          "id": "A4",
+          "text": "I enjoy coming up with new ideas",
+          "weight": 1.0
+        },
+        {
+          "id": "A5",
+          "text": "I like to think outside the box",
+          "weight": 0.9
+        },
+        {
+          "id": "A6",
+          "text": "I appreciate beauty and aesthetics",
+          "weight": 0.8
+        },
+        {
+          "id": "A7",
+          "text": "I enjoy attending cultural events",
+          "weight": 0.7
+        },
+        {
+          "id": "A8",
+          "text": "I prefer original solutions over conventional ones",
+          "weight": 0.9
+        }
+      ]
+    },
+    "Social": {
+      "description": "Helping, teaching, interpersonal activities",
+      "questions": [
+        {
+          "id": "S1",
+          "text": "I enjoy helping and teaching others",
+          "weight": 1.0
+        },
+        {
+          "id": "S2",
+          "text": "I like working in teams",
+          "weight": 0.9
+        },
+        {
+          "id": "S3",
+          "text": "I prefer jobs that involve interacting with people",
+          "weight": 1.0
+        },
+        {
+          "id": "S4",
+          "text": "I enjoy volunteering and community service",
+          "weight": 0.9
+        },
+        {
+          "id": "S5",
+          "text": "I like to mentor or coach others",
+          "weight": 1.0
+        },
+        {
+          "id": "S6",
+          "text": "I am sensitive to others' needs and feelings",
+          "weight": 0.8
+        },
+        {
+          "id": "S7",
+          "text": "I enjoy facilitating group discussions",
+          "weight": 0.8
+        },
+        {
+          "id": "S8",
+          "text": "I prefer collaborative over competitive environments",
+          "weight": 0.7
+        }
+      ]
+    },
+    "Enterprising": {
+      "description": "Leadership, persuasion, business activities",
+      "questions": [
+        {
+          "id": "E1",
+          "text": "I enjoy leading and influencing others",
+          "weight": 1.0
+        },
+        {
+          "id": "E2",
+          "text": "I like to take on challenges and risks",
+          "weight": 0.9
+        },
+        {
+          "id": "E3",
+          "text": "I enjoy selling ideas or products",
+          "weight": 1.0
+        },
+        {
+          "id": "E4",
+          "text": "I prefer competitive environments",
+          "weight": 0.8
+        },
+        {
+          "id": "E5",
+          "text": "I like to start new projects or businesses",
+          "weight": 1.0
+        },
+        {
+          "id": "E6",
+          "text": "I enjoy negotiating and persuading",
+          "weight": 0.9
+        },
+        {
+          "id": "E7",
+          "text": "I like setting and achieving ambitious goals",
+          "weight": 0.9
+        },
+        {
+          "id": "E8",
+          "text": "I prefer being in charge rather than following",
+          "weight": 0.8
+        }
+      ]
+    },
+    "Conventional": {
+      "description": "Organized, detail-oriented, structured activities",
+      "questions": [
+        {
+          "id": "C1",
+          "text": "I enjoy organizing and structuring information",
+          "weight": 1.0
+        },
+        {
+          "id": "C2",
+          "text": "I like following established procedures",
+          "weight": 0.9
+        },
+        {
+          "id": "C3",
+          "text": "I prefer working with numbers and data",
+          "weight": 1.0
+        },
+        {
+          "id": "C4",
+          "text": "I enjoy administrative tasks",
+          "weight": 0.8
+        },
+        {
+          "id": "C5",
+          "text": "I like maintaining order and accuracy",
+          "weight": 1.0
+        },
+        {
+          "id": "C6",
+          "text": "I prefer clear expectations and guidelines",
+          "weight": 0.9
+        },
+        {
+          "id": "C7",
+          "text": "I enjoy creating systems and processes",
+          "weight": 0.9
+        },
+        {
+          "id": "C8",
+          "text": "I like working in structured environments",
+          "weight": 0.8
+        }
+      ]
+    }
+  },
+  "scoring": {
+    "method": "weighted_average",
+    "interpretation": {
+      "high": "4.0-5.0",
+      "moderate": "2.5-3.9",
+      "low": "1.0-2.4"
+    }
+  }
+}

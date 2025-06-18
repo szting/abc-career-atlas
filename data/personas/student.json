@@ -1,0 +1,39 @@
+{
+  "id": "student",
+  "name": "Recent Graduate / Student",
+  "description": "Young professionals or students exploring career options",
+  "age_range": "18-25",
+  "characteristics": [
+    "Limited work experience",
+    "Exploring career options",
+    "Seeking entry-level positions",
+    "Open to learning new skills",
+    "Budget-conscious"
+  ],
+  "common_goals": [
+    "Find first job",
+    "Build professional network",
+    "Develop marketable skills",
+    "Understand career paths",
+    "Pay off student loans"
+  ],
+  "challenges": [
+    "Lack of experience",
+    "Uncertainty about career direction",
+    "Competition for entry-level roles",
+    "Skills gap",
+    "Financial pressure"
+  ],
+  "recommended_assessments": [
+    "riasec",
+    "skills_inventory",
+    "values_clarification"
+  ],
+  "coaching_topics": [
+    "resume_building",
+    "interview_preparation",
+    "networking_strategies",
+    "skill_development",
+    "career_exploration"
+  ]
+}

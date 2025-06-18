@@ -1,0 +1,89 @@
+{
+  "topic": "Resume Building",
+  "description": "Create compelling resumes that get noticed",
+  "modules": [
+    {
+      "title": "Resume Fundamentals",
+      "content": [
+        {
+          "type": "structure",
+          "sections": [
+            "Contact Information",
+            "Professional Summary",
+            "Work Experience",
+            "Education",
+            "Skills",
+            "Additional Sections"
+          ]
+        },
+        {
+          "type": "formatting_tips",
+          "items": [
+            "Use consistent formatting",
+            "Keep to 1-2 pages",
+            "Use action verbs",
+            "Quantify achievements",
+            "Tailor to each job"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Writing Compelling Content",
+      "content": [
+        {
+          "type": "action_verbs",
+          "categories": {
+            "Leadership": ["Led", "Directed", "Managed", "Supervised", "Coordinated"],
+            "Achievement": ["Achieved", "Exceeded", "Delivered", "Completed", "Won"],
+            "Innovation": ["Created", "Developed", "Designed", "Implemented", "Launched"],
+            "Analysis": ["Analyzed", "Evaluated", "Assessed", "Researched", "Investigated"]
+          }
+        },
+        {
+          "type": "achievement_formula",
+          "template": "Action Verb + Task + Result + Impact",
+          "example": "Increased sales revenue by 25% through implementing new CRM system, resulting in $2M additional annual revenue"
+        }
+      ]
+    },
+    {
+      "title": "ATS Optimization",
+      "content": [
+        {
+          "type": "best_practices",
+          "items": [
+            "Use standard section headings",
+            "Include keywords from job description",
+            "Avoid graphics and tables",
+            "Use standard fonts",
+            "Save as .docx or .pdf"
+          ]
+        },
+        {
+          "type": "keyword_strategy",
+          "tips": [
+            "Mirror job posting language",
+            "Include industry terms",
+            "Use both acronyms and full terms",
+            "Place keywords naturally"
+          ]
+        }
+      ]
+    }
+  ],
+  "templates": [
+    {
+      "name": "Entry Level",
+      "focus": "Education and internships"
+    },
+    {
+      "name": "Career Change",
+      "focus": "Transferable skills"
+    },
+    {
+      "name": "Executive",
+      "focus": "Leadership and strategy"
+    }
+  ]
+}

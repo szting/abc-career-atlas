@@ -1,0 +1,71 @@
+{
+  "pathway_id": "healthcare_career",
+  "title": "Healthcare Career Pathway",
+  "description": "Various routes in healthcare professions",
+  "entry_points": [
+    {
+      "name": "Direct Patient Care",
+      "description": "Roles involving hands-on patient interaction",
+      "examples": ["Nursing", "Physical Therapy", "Medical Assistant"],
+      "education": "Certificate to Doctoral",
+      "timeline": "6 months - 8 years"
+    },
+    {
+      "name": "Allied Health",
+      "description": "Supporting healthcare roles",
+      "examples": ["Radiology Tech", "Lab Technician", "Respiratory Therapist"],
+      "education": "Associate to Bachelor's",
+      "timeline": "2-4 years"
+    },
+    {
+      "name": "Healthcare Administration",
+      "description": "Business side of healthcare",
+      "examples": ["Health Admin", "Medical Billing", "Health IT"],
+      "education": "Bachelor's to Master's",
+      "timeline": "4-6 years"
+    }
+  ],
+  "career_stages": [
+    {
+      "level": "Entry Level",
+      "certifications": ["CNA", "EMT", "Medical Assistant"],
+      "roles": ["Nursing Assistant", "Medical Scribe", "Patient Care Tech"],
+      "salary_range": "$25k-$35k"
+    },
+    {
+      "level": "Professional",
+      "degrees": ["RN", "BSN", "Allied Health Degrees"],
+      "roles": ["Registered Nurse", "Therapist", "Technologist"],
+      "salary_range": "$50k-$80k"
+    },
+    {
+      "level": "Advanced Practice",
+      "degrees": ["MSN", "DNP", "Specialty Certifications"],
+      "roles": ["Nurse Practitioner", "Clinical Specialist", "Therapy Director"],
+      "salary_range": "$80k-$120k"
+    },
+    {
+      "level": "Leadership",
+      "qualifications": ["Advanced degrees", "Management experience"],
+      "roles": ["Director of Nursing", "Hospital Administrator", "Chief Medical Officer"],
+      "salary_range": "$100k-$250k+"
+    }
+  ],
+  "specialization_paths": [
+    {
+      "area": "Critical Care",
+      "requirements": ["ICU experience", "CCRN certification"],
+      "roles": ["ICU Nurse", "Flight Nurse", "Trauma Specialist"]
+    },
+    {
+      "area": "Pediatrics",
+      "requirements": ["Pediatric training", "Child development knowledge"],
+      "roles": ["Pediatric Nurse", "Child Life Specialist", "NICU Nurse"]
+    },
+    {
+      "area": "Mental Health",
+      "requirements": ["Psychology background", "Counseling skills"],
+      "roles": ["Psychiatric Nurse", "Mental Health Counselor", "Therapist"]
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "pathway_id": "business_career",
+  "title": "Business Career Pathway",
+  "description": "Diverse paths in business and management",
+  "entry_points": [
+    {
+      "name": "Business Degree",
+      "description": "Traditional bachelor's in business",
+      "specializations": ["Finance", "Marketing", "Management", "Accounting"],
+      "timeline": "4 years",
+      "next_steps": ["Entry analyst roles", "Management trainee programs", "MBA"]
+    },
+    {
+      "name": "Industry Experience",
+      "description": "Start in industry, move to business side",
+      "examples": ["Sales to Sales Manager", "Engineer to Product Manager"],
+      "timeline": "Varies",
+      "advantages": ["Domain expertise", "Practical knowledge"]
+    },
+    {
+      "name": "MBA Route",
+      "description": "Advanced degree for career change or acceleration",
+      "timeline": "2 years full-time, 3-4 years part-time",
+      "benefits": ["Network", "Career switch", "Leadership prep"]
+    }
+  ],
+  "functional_areas": [
+    {
+      "area": "Finance",
+      "roles": ["Financial Analyst", "Controller", "CFO"],
+      "key_skills": ["Financial modeling", "Analysis", "Strategic planning"],
+      "certifications": ["CPA", "CFA", "FRM"]
+    },
+    {
+      "area": "Marketing",
+      "roles": ["Marketing Coordinator", "Brand Manager", "CMO"],
+      "key_skills": ["Digital marketing", "Analytics", "Creative strategy"],
+      "certifications": ["Google Ads", "HubSpot", "Facebook Blueprint"]
+    },
+    {
+      "area": "Operations",
+      "roles": ["Operations Analyst", "Supply Chain Manager", "COO"],
+      "key_skills": ["Process improvement", "Data analysis", "Project management"],
+      "certifications": ["Six Sigma", "PMP", "APICS"]
+    },
+    {
+      "area": "Human Resources",
+      "roles": ["HR Coordinator", "HR Manager", "CHRO"],
+      "key_skills": ["Employee relations", "Talent acquisition", "Strategic HR"],
+      "certifications": ["SHRM-CP", "PHR", "SHRM-SCP"]
+    }
+  ],
+  "leadership_track": [
+    {
+      "level": "Individual Contributor",
+      "focus": "Technical excellence",
+      "years": "0-3"
+    },
+    {
+      "level": "Team Lead",
+      "focus": "People management",
+      "years": "3-5"
+    },
+    {
+      "level": "Manager",
+      "focus": "Department goals",
+      "years": "5-8"
+    },
+    {
+      "level": "Director",
+      "focus": "Strategic planning",
+      "years": "8-12"
+    },
+    {
+      "level": "Executive",
+      "focus": "Organizational leadership",
+      "years": "12+"
+    }
+  ]
+}

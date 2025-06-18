@@ -1,0 +1,40 @@
+{
+  "id": "career_changer",
+  "name": "Career Changer",
+  "description": "Individuals transitioning to a new career field",
+  "age_range": "30-55",
+  "characteristics": [
+    "Dissatisfied with current career",
+    "Seeking meaningful work",
+    "Transferable skills",
+    "May need retraining",
+    "Risk-conscious"
+  ],
+  "common_goals": [
+    "Find fulfilling work",
+    "Leverage existing skills",
+    "Smooth transition",
+    "Maintain income level",
+    "Build new network"
+  ],
+  "challenges": [
+    "Starting over",
+    "Financial concerns",
+    "Imposter syndrome",
+    "Age discrimination",
+    "Skill gaps"
+  ],
+  "recommended_assessments": [
+    "riasec",
+    "transferable_skills",
+    "values_assessment",
+    "personality_type"
+  ],
+  "coaching_topics": [
+    "career_transition_planning",
+    "skill_gap_analysis",
+    "rebranding_strategies",
+    "confidence_building",
+    "financial_planning"
+  ]
+}

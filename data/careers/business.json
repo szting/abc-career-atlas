@@ -1,0 +1,71 @@
+{
+  "category": "Business",
+  "description": "Careers in management, finance, and business operations",
+  "growth_outlook": "Moderate to High",
+  "careers": [
+    {
+      "title": "Marketing Manager",
+      "description": "Develop and execute marketing strategies to promote products and services",
+      "riasec_codes": ["E", "A", "S"],
+      "required_skills": [
+        "Strategic planning",
+        "Digital marketing",
+        "Data analysis",
+        "Creative thinking",
+        "Leadership"
+      ],
+      "education_requirements": "Bachelor's in Marketing, Business, or related field",
+      "salary_range": {
+        "entry": "$55,000",
+        "mid": "$85,000",
+        "senior": "$130,000+"
+      },
+      "growth_rate": "10%",
+      "work_environment": "Office, remote options, fast-paced",
+      "career_path": [
+        "Marketing Coordinator",
+        "Marketing Manager",
+        "Senior Marketing Manager",
+        "Marketing Director",
+        "CMO"
+      ],
+      "certifications": [
+        "Google Analytics",
+        "HubSpot Marketing",
+        "Facebook Blueprint"
+      ]
+    },
+    {
+      "title": "Financial Analyst",
+      "description": "Analyze financial data to guide business decisions",
+      "riasec_codes": ["C", "I", "E"],
+      "required_skills": [
+        "Financial modeling",
+        "Excel proficiency",
+        "Data analysis",
+        "Report writing",
+        "Presentation skills"
+      ],
+      "education_requirements": "Bachelor's in Finance, Accounting, or Economics",
+      "salary_range": {
+        "entry": "$60,000",
+        "mid": "$80,000",
+        "senior": "$110,000+"
+      },
+      "growth_rate": "8%",
+      "work_environment": "Corporate offices, investment firms",
+      "career_path": [
+        "Junior Analyst",
+        "Financial Analyst",
+        "Senior Analyst",
+        "Finance Manager",
+        "CFO"
+      ],
+      "certifications": [
+        "CFA",
+        "FRM",
+        "CPA"
+      ]
+    }
+  ]
+}

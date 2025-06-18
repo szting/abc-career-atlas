@@ -1,0 +1,71 @@
+{
+  "category": "Healthcare",
+  "description": "Careers in medical, nursing, and health services",
+  "growth_outlook": "High",
+  "careers": [
+    {
+      "title": "Registered Nurse",
+      "description": "Provide and coordinate patient care in various healthcare settings",
+      "riasec_codes": ["S", "I", "R"],
+      "required_skills": [
+        "Patient care",
+        "Medical knowledge",
+        "Communication",
+        "Critical thinking",
+        "Empathy"
+      ],
+      "education_requirements": "Bachelor of Science in Nursing (BSN)",
+      "salary_range": {
+        "entry": "$60,000",
+        "mid": "$75,000",
+        "senior": "$95,000+"
+      },
+      "growth_rate": "15%",
+      "work_environment": "Hospitals, clinics, home health, shifts",
+      "career_path": [
+        "Staff Nurse",
+        "Charge Nurse",
+        "Nurse Manager",
+        "Director of Nursing",
+        "Chief Nursing Officer"
+      ],
+      "certifications": [
+        "NCLEX-RN",
+        "BLS/ACLS",
+        "Specialty certifications"
+      ]
+    },
+    {
+      "title": "Physical Therapist",
+      "description": "Help patients recover from injuries and improve mobility",
+      "riasec_codes": ["S", "R", "I"],
+      "required_skills": [
+        "Anatomy knowledge",
+        "Manual therapy",
+        "Exercise prescription",
+        "Patient communication",
+        "Treatment planning"
+      ],
+      "education_requirements": "Doctor of Physical Therapy (DPT)",
+      "salary_range": {
+        "entry": "$70,000",
+        "mid": "$90,000",
+        "senior": "$110,000+"
+      },
+      "growth_rate": "21%",
+      "work_environment": "Clinics, hospitals, sports facilities",
+      "career_path": [
+        "Staff PT",
+        "Senior PT",
+        "Lead Therapist",
+        "Clinic Director",
+        "Practice Owner"
+      ],
+      "certifications": [
+        "State licensure",
+        "Board certifications",
+        "Specialty certifications"
+      ]
+    }
+  ]
+}

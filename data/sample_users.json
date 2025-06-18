@@ -1,0 +1,102 @@
+{
+  "users": [
+    {
+      "username": "demo_student",
+      "persona": "student",
+      "profile": {
+        "age": 22,
+        "education": "Bachelor's in Psychology (in progress)",
+        "experience": "Part-time retail, 1 summer internship",
+        "interests": ["helping others", "data analysis", "creative writing"],
+        "goals": ["Find entry-level job", "Explore career options", "Build professional skills"]
+      },
+      "assessment_history": [
+        {
+          "date": "2024-01-15",
+          "type": "RIASEC",
+          "results": {
+            "Social": 4.5,
+            "Investigative": 4.0,
+            "Artistic": 3.8,
+            "Enterprising": 3.2,
+            "Conventional": 2.8,
+            "Realistic": 2.5
+          }
+        }
+      ],
+      "recommended_careers": [
+        "UX Researcher",
+        "Human Resources Specialist",
+        "Market Research Analyst",
+        "School Counselor",
+        "Content Strategist"
+      ]
+    },
+    {
+      "username": "demo_professional",
+      "persona": "professional",
+      "profile": {
+        "age": 35,
+        "education": "MBA",
+        "experience": "10 years in marketing",
+        "current_role": "Marketing Manager",
+        "interests": ["leadership", "strategy", "innovation"],
+        "goals": ["Move to director level", "Develop leadership skills", "Better work-life balance"]
+      },
+      "assessment_history": [
+        {
+          "date": "2024-01-20",
+          "type": "RIASEC",
+          "results": {
+            "Enterprising": 4.7,
+            "Social": 4.2,
+            "Artistic": 3.9,
+            "Investigative": 3.5,
+            "Conventional": 3.0,
+            "Realistic": 2.3
+          }
+        }
+      ],
+      "recommended_careers": [
+        "Marketing Director",
+        "Brand Strategy Director",
+        "Chief Marketing Officer",
+        "Business Development Director",
+        "VP of Marketing"
+      ]
+    },
+    {
+      "username": "demo_changer",
+      "persona": "career_changer",
+      "profile": {
+        "age": 42,
+        "education": "Bachelor's in Accounting",
+        "experience": "15 years in finance",
+        "current_role": "Senior Financial Analyst",
+        "interests": ["teaching", "mentoring", "personal development"],
+        "goals": ["More meaningful work", "Use expertise differently", "Work with people more"]
+      },
+      "assessment_history": [
+        {
+          "date": "2024-01-25",
+          "type": "RIASEC",
+          "results": {
+            "Social": 4.6,
+            "Conventional": 4.0,
+            "Investigative": 3.7,
+            "Enterprising": 3.5,
+            "Artistic": 2.8,
+            "Realistic": 2.2
+          }
+        }
+      ],
+      "recommended_careers": [
+        "Corporate Trainer",
+        "Financial Advisor",
+        "Business Teacher",
+        "Career Coach",
+        "Non-profit CFO"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "assessment_type": "Skills Inventory",
+  "version": "1.0",
+  "instructions": "Rate your proficiency level for each skill",
+  "skill_categories": {
+    "technical_skills": {
+      "name": "Technical Skills",
+      "skills": [
+        {
+          "id": "T1",
+          "name": "Data Analysis",
+          "description": "Ability to interpret and analyze data",
+          "levels": ["Beginner", "Intermediate", "Advanced", "Expert"]
+        },
+        {
+          "id": "T2",
+          "name": "Programming",
+          "description": "Writing and understanding code",
+          "levels": ["No experience", "Basic", "Proficient", "Expert"]
+        },
+        {
+          "id": "T3",
+          "name": "Digital Tools",
+          "description": "Using software and digital platforms",
+          "levels": ["Basic user", "Intermediate", "Advanced", "Power user"]
+        },
+        {
+          "id": "T4",
+          "name": "Technical Writing",
+          "description": "Creating technical documentation",
+          "levels": ["Beginner", "Competent", "Proficient", "Expert"]
+        }
+      ]
+    },
+    "soft_skills": {
+      "name": "Soft Skills",
+      "skills": [
+        {
+          "id": "S1",
+          "name": "Communication",
+          "description": "Verbal and written communication",
+          "levels": ["Developing", "Competent", "Strong", "Exceptional"]
+        },
+        {
+          "id": "S2",
+          "name": "Leadership",
+          "description": "Leading teams and projects",
+          "levels": ["Emerging", "Developing", "Experienced", "Expert"]
+        },
+        {
+          "id": "S3",
+          "name": "Problem Solving",
+          "description": "Analyzing and solving complex problems",
+          "levels": ["Basic", "Good", "Strong", "Exceptional"]
+        },
+        {
+          "id": "S4",
+          "name": "Teamwork",
+          "description": "Working effectively in teams",
+          "levels": ["Contributor", "Active member", "Team player", "Team leader"]
+        }
+      ]
+    },
+    "industry_skills": {
+      "name": "Industry-Specific Skills",
+      "skills": [
+        {
+          "id": "I1",
+          "name": "Project Management",
+          "description": "Planning and executing projects",
+          "levels": ["Basic", "Intermediate", "Advanced", "Expert"]
+        },
+        {
+          "id": "I2",
+          "name": "Customer Service",
+          "description": "Serving and supporting customers",
+          "levels": ["Basic", "Good", "Excellent", "Outstanding"]
+        },
+        {
+          "id": "I3",
+          "name": "Sales",
+          "description": "Selling products or services",
+          "levels": ["Beginner", "Competent", "Successful", "Top performer"]
+        },
+        {
+          "id": "I4",
+          "name": "Financial Management",
+          "description": "Managing budgets and finances",
+          "levels": ["Basic", "Competent", "Proficient", "Expert"]
+        }
+      ]
+    }
+  },
+  "skill_gap_analysis": {
+    "instructions": "Compare current skills with target role requirements",
+    "output": "Personalized learning recommendations"
+  }
+}

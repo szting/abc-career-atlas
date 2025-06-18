@@ -1,0 +1,92 @@
+{
+  "pathway_id": "tech_career",
+  "title": "Technology Career Pathway",
+  "description": "Multiple routes to build a successful tech career",
+  "entry_points": [
+    {
+      "name": "Traditional Education",
+      "description": "4-year computer science degree",
+      "timeline": "4 years",
+      "cost": "$$$",
+      "pros": ["Comprehensive foundation", "Networking opportunities", "Internship access"],
+      "cons": ["Time intensive", "Expensive", "May include irrelevant coursework"]
+    },
+    {
+      "name": "Bootcamp",
+      "description": "Intensive coding bootcamp",
+      "timeline": "3-6 months",
+      "cost": "$$",
+      "pros": ["Fast track", "Practical skills", "Job placement help"],
+      "cons": ["Intensive pace", "Limited depth", "Expensive for duration"]
+    },
+    {
+      "name": "Self-Taught",
+      "description": "Online courses and self-study",
+      "timeline": "6-24 months",
+      "cost": "$",
+      "pros": ["Flexible pace", "Low cost", "Learn while working"],
+      "cons": ["Requires discipline", "No structured support", "Harder to network"]
+    }
+  ],
+  "career_stages": [
+    {
+      "level": "Entry Level",
+      "years": "0-2",
+      "roles": ["Junior Developer", "QA Tester", "IT Support"],
+      "skills_focus": ["Basic programming", "Version control", "Problem solving"],
+      "salary_range": "$50k-$70k"
+    },
+    {
+      "level": "Mid Level",
+      "years": "2-5",
+      "roles": ["Software Developer", "DevOps Engineer", "Full Stack Developer"],
+      "skills_focus": ["Advanced programming", "System design", "Team collaboration"],
+      "salary_range": "$70k-$120k"
+    },
+    {
+      "level": "Senior Level",
+      "years": "5-10",
+      "roles": ["Senior Developer", "Tech Lead", "Solutions Architect"],
+      "skills_focus": ["Architecture", "Mentoring", "Strategic thinking"],
+      "salary_range": "$120k-$180k"
+    },
+    {
+      "level": "Leadership",
+      "years": "10+",
+      "roles": ["Engineering Manager", "Director", "CTO"],
+      "skills_focus": ["Leadership", "Business strategy", "Team building"],
+      "salary_range": "$150k-$300k+"
+    }
+  ],
+  "skill_progression": {
+    "technical": [
+      "HTML/CSS/JavaScript basics",
+      "One backend language (Python, Java, etc.)",
+      "Database fundamentals",
+      "Cloud platforms (AWS, Azure)",
+      "System design and architecture",
+      "DevOps and CI/CD"
+    ],
+    "soft_skills": [
+      "Communication",
+      "Problem solving",
+      "Team collaboration",
+      "Project management",
+      "Leadership",
+      "Strategic thinking"
+    ]
+  },
+  "transition_strategies": [
+    {
+      "from": "Non-tech role",
+      "to": "Tech role",
+      "steps": [
+        "Identify transferable skills",
+        "Learn fundamental programming",
+        "Build portfolio projects",
+        "Network in tech community",
+        "Apply for entry-level positions"
+      ]
+    }
+  ]
+}

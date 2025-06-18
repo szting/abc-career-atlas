@@ -1,0 +1,116 @@
+{
+  "assessment_type": "Work Values Clarification",
+  "version": "1.0",
+  "instructions": "Rank the importance of each work value to you",
+  "value_categories": {
+    "intrinsic_values": {
+      "name": "Intrinsic Values",
+      "description": "Internal satisfaction and fulfillment",
+      "values": [
+        {
+          "id": "IV1",
+          "name": "Autonomy",
+          "description": "Freedom to make decisions and work independently"
+        },
+        {
+          "id": "IV2",
+          "name": "Mastery",
+          "description": "Becoming excellent at what you do"
+        },
+        {
+          "id": "IV3",
+          "name": "Purpose",
+          "description": "Work that has meaning and makes a difference"
+        },
+        {
+          "id": "IV4",
+          "name": "Creativity",
+          "description": "Opportunity to innovate and express ideas"
+        }
+      ]
+    },
+    "extrinsic_values": {
+      "name": "Extrinsic Values",
+      "description": "External rewards and recognition",
+      "values": [
+        {
+          "id": "EV1",
+          "name": "Compensation",
+          "description": "Salary, bonuses, and financial rewards"
+        },
+        {
+          "id": "EV2",
+          "name": "Recognition",
+          "description": "Being acknowledged for achievements"
+        },
+        {
+          "id": "EV3",
+          "name": "Advancement",
+          "description": "Opportunities for promotion and growth"
+        },
+        {
+          "id": "EV4",
+          "name": "Security",
+          "description": "Job stability and predictability"
+        }
+      ]
+    },
+    "lifestyle_values": {
+      "name": "Lifestyle Values",
+      "description": "Work-life integration preferences",
+      "values": [
+        {
+          "id": "LV1",
+          "name": "Work-Life Balance",
+          "description": "Time for personal life and interests"
+        },
+        {
+          "id": "LV2",
+          "name": "Flexibility",
+          "description": "Flexible hours and work arrangements"
+        },
+        {
+          "id": "LV3",
+          "name": "Location",
+          "description": "Where you work (remote, office, travel)"
+        },
+        {
+          "id": "LV4",
+          "name": "Environment",
+          "description": "Physical and cultural work environment"
+        }
+      ]
+    },
+    "social_values": {
+      "name": "Social Values",
+      "description": "Interpersonal and societal aspects",
+      "values": [
+        {
+          "id": "SV1",
+          "name": "Collaboration",
+          "description": "Working closely with others"
+        },
+        {
+          "id": "SV2",
+          "name": "Leadership",
+          "description": "Opportunities to lead and influence"
+        },
+        {
+          "id": "SV3",
+          "name": "Service",
+          "description": "Helping others and contributing to society"
+        },
+        {
+          "id": "SV4",
+          "name": "Diversity",
+          "description": "Working in diverse, inclusive environments"
+        }
+      ]
+    }
+  },
+  "ranking_method": {
+    "type": "forced_ranking",
+    "scale": "1-10",
+    "instructions": "Rank each value from 1 (least important) to 10 (most important)"
+  }
+}
