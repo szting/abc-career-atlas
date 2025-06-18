@@ -12,9 +12,9 @@ A comprehensive career assessment and guidance application built with Streamlit,
 - [Configuration](#configuration)
 - [User Guide](#user-guide)
 - [Code Structure](#code-structure)
-- [Known Issues](#known-issues)
+- [Implementation Status](#implementation-status)
+- [API Documentation](#api-documentation)
 - [Customization Guide](#customization-guide)
-- [API Integration](#api-integration)
 - [Troubleshooting](#troubleshooting)
 
 ## Overview
@@ -24,10 +24,11 @@ Career Atlas is an intelligent career guidance system that helps users discover 
 ### What Makes Career Atlas Special?
 
 - **Science-Based**: Uses the proven RIASEC (Holland Code) model for personality assessment
-- **AI-Enhanced**: Leverages artificial intelligence for personalized recommendations
+- **AI-Enhanced**: Leverages multiple AI providers (OpenAI, Anthropic, Google) with automatic fallback
 - **Multi-User Support**: Different interfaces for individuals, coaches, and managers
-- **Comprehensive**: Covers personality, skills, and values for holistic career matching
-- **Customizable**: Administrators can tailor assessments to specific industries or organizations
+- **Comprehensive**: Covers personality, skills, values, career matching, and learning paths
+- **Smart Learning**: Personalized learning recommendations with progress tracking
+- **Data-Driven**: Advanced analytics and insights for career development
 
 ## Features
 
@@ -36,8 +37,10 @@ Career Atlas is an intelligent career guidance system that helps users discover 
 - **Skills Confidence Evaluation**: Rate your confidence across various skill categories
 - **Work Values Prioritization**: Identify what matters most in your ideal workplace
 - **AI-Powered Career Matching**: Get personalized career recommendations based on your profile
-- **Development Planning**: Receive actionable steps to reach your career goals
+- **Smart Learning Paths**: Receive customized learning recommendations and track progress
+- **Development Planning**: Get actionable steps to reach your career goals
 - **Visual Analytics**: See your results through interactive charts and graphs
+- **Progress Tracking**: Monitor your learning journey with streaks and statistics
 
 ### For Career Coaches
 - **Client Dashboard**: Access coaching questions tailored to each client's RIASEC profile
@@ -70,8 +73,12 @@ Career Atlas is an intelligent career guidance system that helps users discover 
 4. **Get Results**: 
    - See your personality profile visualized
    - Review matched careers with explanations
-   - Receive a personalized development plan
-5. **Take Action**: Export results, schedule coaching, or start learning
+   - Receive personalized learning paths
+5. **Track Progress**:
+   - Monitor learning progress
+   - Update skills as you grow
+   - Adjust career goals
+6. **Take Action**: Export results, start learning, or schedule coaching
 
 ### The Science Behind It
 
@@ -89,17 +96,24 @@ The app matches your RIASEC profile with careers that have similar profiles, ens
 
 ### Technology Stack
 - **Frontend**: Streamlit (Python web framework)
-- **Authentication**: Streamlit-authenticator / Simple password system
+- **Authentication**: Simple hardcoded authentication system
 - **Data Visualization**: Plotly for interactive charts
 - **Data Processing**: Pandas for data manipulation
-- **AI Integration**: OpenAI, Anthropic, or Google AI APIs
-- **Storage**: Local file system / Google Drive integration
+- **AI Integration**: OpenAI (primary), Anthropic, Google AI (fallbacks)
+- **Storage**: Local file system with JSON data files
+- **Session Management**: Streamlit session state
 
 ### Key Components
 1. **Multi-Page Application**: Modular page structure for different user flows
-2. **Session Management**: Maintains user state throughout the assessment
+2. **Manager Classes**: Specialized managers for different functionalities
+   - AuthManager: Authentication and user management
+   - DataManager: Data persistence and retrieval
+   - AIManager: Multi-provider AI integration
+   - AssessmentManager: RIASEC assessment engine
+   - CareerManager: Career matching and exploration
+   - LearningManager: Learning resources and progress tracking
 3. **AI Integration Layer**: Abstracted interface for multiple AI providers
-4. **Data Management**: Handles assessment storage and retrieval
+4. **Data Management**: Structured JSON storage with versioning
 5. **Analytics Engine**: Processes and visualizes assessment results
 
 ## Installation
@@ -128,10 +142,11 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. **Set Up Configuration**
+4. **Set Up Environment Variables**
 ```bash
-# Create config.yaml file (see Configuration section)
-cp config.example.yaml config.yaml
+# Create .env file
+cp .env.example .env
+# Edit .env and add your API keys
 ```
 
 5. **Run the Application**
@@ -143,67 +158,72 @@ streamlit run app.py
 
 ### Authentication Setup
 
-Create a `config.yaml` file:
-```yaml
-credentials:
-  usernames:
-    demo:
-      email: demo@example.com
-      name: Demo User
-      password: $2b$12$hashed_password_here  # Use demo123
-    admin:
-      email: admin@example.com
-      name: Admin User
-      password: $2b$12$hashed_password_here  # Use admin123
+The system uses hardcoded authentication with two default users:
+- **Demo User**: username: `demo`, password: `demo123`
+- **Admin User**: username: `admin`, password: `admin123`
 
-cookie:
-  expiry_days: 30
-  key: some_signature_key
-  name: some_cookie_name
-
-preauthorized:
-  emails: []
-```
+To modify users, edit the `USERS` dictionary in `utils/auth_manager.py`.
 
 ### API Configuration
 
-Set up AI provider credentials in `.env`:
+Create a `.env` file with your API keys:
 ```env
 OPENAI_API_KEY=your_openai_key_here
 ANTHROPIC_API_KEY=your_anthropic_key_here
 GOOGLE_API_KEY=your_google_key_here
 ```
 
-### Google Drive Integration (Optional)
+**Note**: The system will automatically fall back to other providers if the primary (OpenAI) is unavailable. If no API keys are configured, it will use offline fallback responses.
 
-Place your `service_account_key.json` in the project root for Google Drive storage.
+### Data Files Structure
+
+All data is stored in the `/data` directory:
+```
+data/
+├── assessments/
+│   └── riasec_questions.json    # RIASEC assessment questions
+├── careers/
+│   └── careers_database.json    # Career information database
+├── skills/
+│   └── skills_database.json     # Skills taxonomy
+├── resources/
+│   ├── learning_resources.json  # Learning materials
+│   └── courses_database.json    # Course catalog
+├── coaching/
+│   └── coaching_questions.json  # Coaching conversation starters
+└── users/                       # User data (auto-created)
+    ├── profiles/               # User profiles
+    ├── assessments/           # Assessment results
+    └── progress/              # Learning progress
+```
 
 ## User Guide
 
 ### For First-Time Users
 
 1. **Access the App**: Open your browser and go to `http://localhost:8501`
-2. **Login**: Use demo/demo123 for testing or your assigned credentials
+2. **Login**: Use demo/demo123 for testing or admin/admin123 for admin access
 3. **Select Your Role**: Choose Individual, Coach, or Manager
 4. **Complete Assessments**: Answer honestly - there are no right or wrong answers
-5. **Review Results**: Take time to explore your matches and recommendations
-6. **Export Your Report**: Download a PDF for future reference
+5. **Explore Careers**: Review your matched careers with detailed insights
+6. **Start Learning**: Follow personalized learning paths
+7. **Track Progress**: Monitor your development journey
 
 ### For Administrators
 
 1. **Access Admin Panel**: Login with admin credentials
-2. **Customize Content**: Upload new questions or career databases
-3. **Configure APIs**: Set up AI providers for enhanced features
-4. **Monitor Usage**: Check analytics for insights
+2. **Manage Data**: Update questions, careers, and resources
+3. **Configure APIs**: Set up AI providers in .env file
+4. **Monitor Usage**: Check analytics and user progress
 
 ## Code Structure
 
 ```
 career-atlas/
 ├── app.py                    # Main application entry point
-├── config.yaml              # Authentication configuration
 ├── requirements.txt         # Python dependencies
 ├── README.md               # This file
+├── .env.example           # Environment variables template
 │
 ├── pages/                  # Streamlit pages
 │   ├── persona_selection.py    # Role selection
@@ -217,127 +237,224 @@ career-atlas/
 │   └── admin_panel.py        # Admin controls
 │
 ├── utils/                  # Utility modules
-│   ├── simple_auth.py        # Authentication
+│   ├── auth_manager.py       # Authentication (✅ Implemented)
+│   ├── data_manager.py       # Data operations (✅ Implemented)
+│   ├── ai_manager.py         # AI integration (✅ Implemented)
+│   ├── assessment_manager.py # Assessment engine (✅ Implemented)
+│   ├── career_manager.py     # Career matching (✅ Implemented)
+│   ├── learning_manager.py   # Learning system (✅ Implemented)
 │   ├── session_state.py      # State management
-│   ├── career_matcher.py     # Matching algorithm
-│   ├── auth_manager.py       # Auth utilities
-│   ├── data_manager.py       # Data handling
-│   └── llm_manager.py        # AI integration
+│   └── llm_manager.py        # Legacy AI manager
 │
-└── data/                   # Data files
-    ├── careers.py            # Career database
-    ├── riasec_questions.py   # Assessment questions
-    ├── skills_list.py        # Skills inventory
-    ├── work_values.py        # Values definitions
-    └── coaching_questions.py # Coaching prompts
+└── data/                   # Data files (✅ All created)
+    ├── assessments/
+    ├── careers/
+    ├── skills/
+    ├── resources/
+    ├── coaching/
+    └── users/
 ```
 
-## Known Issues
+## Implementation Status
 
-### Current Limitations
+### ✅ Completed Features
 
-1. **Authentication Conflict**: Two authentication systems present (needs consolidation)
-2. **Missing Data Files**: Core data files need to be created or imported
-3. **Manager Classes**: Implementation pending for data and AI managers
-4. **Navigation Flow**: Mismatch between app.py routing and actual pages
-5. **API Integration**: Needs unified approach for multiple AI providers
+1. **Authentication System** (Fix #1)
+   - Simple hardcoded authentication
+   - User session management
+   - Role-based access (admin/user)
 
-### Planned Improvements
+2. **Data Files** (Fix #2)
+   - Complete RIASEC questions database
+   - Comprehensive careers database
+   - Skills taxonomy
+   - Learning resources catalog
+   - Coaching questions library
 
-- [ ] Consolidate authentication system
-- [ ] Implement missing manager classes
-- [ ] Create comprehensive data files
-- [ ] Add email notification system
-- [ ] Implement PDF report generation
-- [ ] Add multi-language support
-- [ ] Create mobile-responsive design
-- [ ] Add batch assessment capabilities
+3. **Navigation System** (Fix #3)
+   - Button-based navigation
+   - Session state management
+   - Multi-page routing
+
+4. **Data Management** (Fix #4)
+   - User profile management
+   - Assessment storage and retrieval
+   - Learning progress tracking
+   - Career interest tracking
+   - Timestamp-based versioning
+
+5. **AI Integration** (Fix #5)
+   - Multi-provider support (OpenAI, Anthropic, Google)
+   - Automatic fallback mechanism
+   - Career recommendations
+   - Development planning
+   - Interview preparation
+   - Skills gap analysis
+
+6. **Assessment Engine** (Fix #6)
+   - RIASEC scoring algorithm (0-100 scale)
+   - Holland Code generation
+   - Score interpretation
+   - Career theme identification
+   - Progress tracking
+   - Response validation
+
+7. **Career Matching** (Fix #7)
+   - Multi-factor matching algorithm
+   - Skills gap analysis
+   - Development path generation
+   - Career insights and trends
+   - Related career suggestions
+   - Entry option analysis
+
+8. **Learning Management** (Fix #8)
+   - Personalized resource recommendations
+   - Learning path creation
+   - Progress tracking
+   - Learning style matching
+   - Skill acquisition tracking
+   - Learning analytics dashboard
+
+### 🚧 In Progress
+
+- Page implementations (welcome, assessments, results, dashboards)
+- UI/UX enhancements
+- Advanced analytics features
+
+### 📋 Pending Features
+
+- Email notifications
+- PDF report generation
+- Advanced data visualizations
+- Social features (mentorship matching)
+- Mobile responsiveness
+
+## API Documentation
+
+### Manager Classes
+
+#### AuthManager
+```python
+# Authentication operations
+AuthManager.login(username, password)
+AuthManager.logout()
+AuthManager.is_authenticated()
+AuthManager.is_admin()
+AuthManager.get_current_user()
+```
+
+#### DataManager
+```python
+# User operations
+data_manager.save_user_profile(user_id, profile_data)
+data_manager.load_user_profile(user_id)
+
+# Assessment operations
+data_manager.save_assessment(user_id, assessment_data)
+data_manager.load_user_assessments(user_id)
+
+# Learning operations
+data_manager.save_learning_progress(user_id, progress_data)
+data_manager.load_learning_history(user_id)
+```
+
+#### AIManager
+```python
+# AI-powered features
+ai_manager.generate_career_recommendations(riasec_scores, additional_info)
+ai_manager.generate_development_plan(riasec_scores, selected_careers, additional_info)
+ai_manager.generate_interview_questions(career_title, level)
+ai_manager.analyze_skills_gap(current_skills, target_career, riasec_scores)
+```
+
+#### AssessmentManager
+```python
+# Assessment operations
+assessment_manager.get_assessment_questions(category)
+assessment_manager.calculate_scores(responses)
+assessment_manager.interpret_scores(scores)
+assessment_manager.save_assessment_result(user_id, scores, responses)
+```
+
+#### CareerManager
+```python
+# Career exploration
+career_manager.search_careers(query, filters)
+career_manager.match_careers_to_assessment(assessment_data, top_n)
+career_manager.get_career_recommendations(user_id, include_ai)
+career_manager.get_career_insights(career_id)
+```
+
+#### LearningManager
+```python
+# Learning features
+learning_manager.search_resources(query, filters)
+learning_manager.get_learning_recommendations(user_id, career_goals)
+learning_manager.track_learning_progress(user_id, resource_id, progress)
+learning_manager.get_learning_dashboard(user_id)
+```
 
 ## Customization Guide
 
 ### Adding New Assessment Questions
 
-1. **RIASEC Questions**: Edit `data/riasec_questions.py`
-```python
-riasec_questions = [
+Edit `data/assessments/riasec_questions.json`:
+```json
+{
+  "questions": [
     {
-        'id': 'q1',
-        'text': 'I enjoy working with tools',
-        'type': 'realistic'
-    },
-    # Add more questions...
-]
-```
-
-2. **Skills Categories**: Modify `data/skills_list.py`
-```python
-skills_categories = [
-    {
-        'name': 'Technical Skills',
-        'skills': ['Programming', 'Data Analysis', 'Design']
-    },
-    # Add more categories...
-]
+      "id": 101,
+      "text": "Your new question here",
+      "type": "Realistic",
+      "category": "interests"
+    }
+  ]
+}
 ```
 
 ### Adding New Careers
 
-Edit `data/careers.py`:
-```python
-careers = [
+Edit `data/careers/careers_database.json`:
+```json
+{
+  "careers": [
     {
-        'id': 'software-engineer',
-        'title': 'Software Engineer',
-        'description': 'Develops software applications',
-        'primary_type': 'investigative',
-        'secondary_type': 'realistic',
-        'required_skills': ['Programming', 'Problem Solving'],
-        'salary_range': '$70,000 - $150,000',
-        'growth_outlook': 'Much faster than average'
-    },
-    # Add more careers...
-]
+      "id": "new-career-id",
+      "title": "New Career Title",
+      "holland_codes": ["RIA"],
+      "required_skills": ["skill1", "skill2"],
+      "salary_range_min": 50000,
+      "salary_range_max": 80000
+    }
+  ]
+}
 ```
 
 ### Customizing the Matching Algorithm
 
-The career matching algorithm in `utils/career_matcher.py` uses these weights:
-- RIASEC alignment: 40%
-- Skills match: 35%
-- Values alignment: 25%
+The career matching algorithm in `utils/career_manager.py` uses these weights:
+- Primary RIASEC match: 40%
+- Secondary RIASEC match: 30%
+- Overall profile similarity: 30%
 
-Adjust these weights based on your needs.
+Adjust the weights in the `_calculate_career_match_score` method.
 
-## API Integration
+### Adding Learning Resources
 
-### Supported AI Providers
-
-1. **OpenAI**: GPT-3.5/GPT-4 for career recommendations
-2. **Anthropic**: Claude for coaching conversations
-3. **Google**: Gemini for development planning
-
-### Setting Up AI Features
-
-1. Obtain API keys from your chosen provider
-2. Add keys to `.env` file or through Admin Panel
-3. Configure fallback options for reliability
-4. Test integration before deployment
-
-### API Usage Examples
-
-```python
-# Generate career recommendations
-recommendations = llm_manager.generate_career_recommendations(
-    riasec_scores={'realistic': 4.2, 'investigative': 3.8},
-    skills=['Programming', 'Analysis'],
-    values=['Work-Life Balance', 'Growth']
-)
-
-# Get coaching questions
-questions = llm_manager.get_coaching_questions(
-    riasec_type='social',
-    context='career transition'
-)
+Edit `data/resources/learning_resources.json`:
+```json
+{
+  "resources": [
+    {
+      "id": "resource-001",
+      "title": "New Learning Resource",
+      "type": "course",
+      "skills": ["Python", "Data Analysis"],
+      "format": "video",
+      "duration_hours": 20
+    }
+  ]
+}
 ```
 
 ## Troubleshooting
@@ -347,26 +464,32 @@ questions = llm_manager.get_coaching_questions(
 **Issue**: "Module not found" errors
 - **Solution**: Ensure all dependencies are installed: `pip install -r requirements.txt`
 
-**Issue**: Authentication not working
-- **Solution**: Check config.yaml format and password hashing
+**Issue**: AI features not working
+- **Solution**: Check API keys in .env file and ensure they're valid (not placeholder values)
 
-**Issue**: AI features not responding
-- **Solution**: Verify API keys and check rate limits
+**Issue**: Data not saving
+- **Solution**: Check that the `/data/users/` directory exists and has write permissions
 
-**Issue**: Assessment results not saving
-- **Solution**: Check file permissions in the project directory
+**Issue**: Assessment not calculating scores
+- **Solution**: Ensure all questions are answered (check for response validation errors)
 
-**Issue**: Charts not displaying
-- **Solution**: Update Plotly: `pip install --upgrade plotly`
+**Issue**: Learning recommendations empty
+- **Solution**: Complete an assessment first and ensure learning resources data file exists
+
+### Debug Mode
+
+To enable debug logging, set in your code:
+```python
+import streamlit as st
+st.set_option('client.showErrorDetails', True)
+```
 
 ### Getting Help
 
-1. Check the [Issues](https://github.com/yourusername/career-atlas/issues) page
-2. Review error logs in the terminal
-3. Contact support with:
-   - Error messages
-   - Steps to reproduce
-   - System information
+1. Check the error messages in the terminal
+2. Review the specific manager class documentation
+3. Ensure all data files are properly formatted JSON
+4. Verify API keys are correctly set
 
 ## Contributing
 
@@ -381,10 +504,10 @@ We welcome contributions! Please:
 ### Development Guidelines
 
 - Follow PEP 8 style guide
-- Add docstrings to functions
+- Add docstrings to all functions
 - Update README for new features
-- Test on multiple browsers
-- Consider accessibility
+- Ensure backward compatibility
+- Test with both user roles
 
 ## License
 
@@ -394,7 +517,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - RIASEC model by John L. Holland
 - Streamlit community for framework support
-- Contributors and testers
+- OpenAI, Anthropic, and Google for AI capabilities
+- All contributors and testers
 
 ---
 
