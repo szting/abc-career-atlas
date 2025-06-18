@@ -1,0 +1,20 @@
+{
+  "name": "career-atlas",
+  "version": "1.0.0",
+  "description": "Career Atlas - AI-powered career assessment and coaching platform",
+  "scripts": {
+    "start": "streamlit run app.py",
+    "dev": "streamlit run app.py --server.runOnSave true",
+    "build": "echo 'No build required for Streamlit app'"
+  },
+  "keywords": [
+    "career",
+    "assessment",
+    "riasec",
+    "coaching",
+    "streamlit",
+    "python"
+  ],
+  "author": "",
+  "license": "ISC"
+}
