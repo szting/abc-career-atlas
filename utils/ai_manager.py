@@ -69,6 +69,68 @@ class AIManager:
             st.error(f"Error generating recommendations: {str(e)}")
             return self._get_fallback_recommendations(riasec_scores)
     
+    def generate_coaching_questions(self,
+                                  coachee_riasec_scores: Dict[str, float],
+                                  coaching_context: str = "general",
+                                  coachee_info: Dict[str, Any] = None) -> List[Dict[str, Any]]:
+        """Generate RIASEC-tailored coaching questions for career coaches"""
+        
+        prompt = self._create_coaching_questions_prompt(coachee_riasec_scores, coaching_context, coachee_info)
+        
+        try:
+            if self.openai_available:
+                return self._get_openai_coaching_questions(prompt)
+            elif self.anthropic_available:
+                return self._get_anthropic_coaching_questions(prompt)
+            elif self.google_available:
+                return self._get_google_coaching_questions(prompt)
+            else:
+                return self._get_fallback_coaching_questions(coachee_riasec_scores, coaching_context)
+        except Exception as e:
+            st.error(f"Error generating coaching questions: {str(e)}")
+            return self._get_fallback_coaching_questions(coachee_riasec_scores, coaching_context)
+    
+    def generate_manager_coaching_questions(self,
+                                          team_member_riasec: Dict[str, float],
+                                          team_member_info: Dict[str, Any],
+                                          management_context: str = "development") -> List[Dict[str, Any]]:
+        """Generate RIASEC-tailored coaching questions for managers"""
+        
+        prompt = self._create_manager_coaching_prompt(team_member_riasec, team_member_info, management_context)
+        
+        try:
+            if self.openai_available:
+                return self._get_openai_manager_questions(prompt)
+            elif self.anthropic_available:
+                return self._get_anthropic_manager_questions(prompt)
+            elif self.google_available:
+                return self._get_google_manager_questions(prompt)
+            else:
+                return self._get_fallback_manager_questions(team_member_riasec, management_context)
+        except Exception as e:
+            st.error(f"Error generating manager questions: {str(e)}")
+            return self._get_fallback_manager_questions(team_member_riasec, management_context)
+    
+    def generate_team_insights(self,
+                             team_riasec_profiles: List[Dict[str, Any]],
+                             team_context: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Generate insights about team dynamics based on RIASEC profiles"""
+        
+        prompt = self._create_team_insights_prompt(team_riasec_profiles, team_context)
+        
+        try:
+            if self.openai_available:
+                return self._get_openai_team_insights(prompt)
+            elif self.anthropic_available:
+                return self._get_anthropic_team_insights(prompt)
+            elif self.google_available:
+                return self._get_google_team_insights(prompt)
+            else:
+                return self._get_fallback_team_insights(team_riasec_profiles)
+        except Exception as e:
+            st.error(f"Error generating team insights: {str(e)}")
+            return self._get_fallback_team_insights(team_riasec_profiles)
+    
     def generate_development_plan(self,
                                 riasec_scores: Dict[str, float],
                                 selected_careers: List[str],
@@ -175,6 +237,157 @@ Return the response as a JSON array with the following structure:
     "daily_tasks": ["task1", "task2", ...]
   }}
 ]"""
+        
+        return prompt
+    
+    def _create_coaching_questions_prompt(self, 
+                                        coachee_riasec_scores: Dict[str, float],
+                                        coaching_context: str,
+                                        coachee_info: Dict[str, Any]) -> str:
+        """Create prompt for RIASEC-tailored coaching questions"""
+        
+        sorted_scores = sorted(coachee_riasec_scores.items(), key=lambda x: x[1], reverse=True)
+        top_types = sorted_scores[:3]
+        
+        prompt = f"""As an expert career coach, generate coaching questions tailored to this coachee's RIASEC profile.
+
+Coachee's RIASEC Profile:
+{json.dumps(coachee_riasec_scores, indent=2)}
+
+Top 3 Types: {', '.join([f"{t[0]} ({t[1]:.1f})" for t in top_types])}
+
+Coaching Context: {coaching_context}
+
+Coachee Information:
+- Current Role: {coachee_info.get('current_role', 'Not specified')}
+- Career Stage: {coachee_info.get('career_stage', 'Not specified')}
+- Goals: {coachee_info.get('goals', 'Not specified')}
+- Challenges: {coachee_info.get('challenges', 'Not specified')}
+
+Generate 10 powerful coaching questions that:
+1. Align with their RIASEC personality type
+2. Explore their natural strengths and interests
+3. Address potential blind spots for their type
+4. Help them discover authentic career paths
+5. Challenge them appropriately based on their profile
+
+For each question, provide:
+- The question itself
+- Why this question matters for their RIASEC type
+- What insights it might reveal
+- Follow-up probes
+
+Return as JSON array:
+[
+  {{
+    "question": "The coaching question",
+    "riasec_relevance": "Why this matters for their type",
+    "potential_insights": "What this might reveal",
+    "follow_up_probes": ["probe1", "probe2"],
+    "category": "strengths|values|challenges|growth|exploration"
+  }}
+]"""
+        
+        return prompt
+    
+    def _create_manager_coaching_prompt(self,
+                                      team_member_riasec: Dict[str, float],
+                                      team_member_info: Dict[str, Any],
+                                      management_context: str) -> str:
+        """Create prompt for manager coaching questions"""
+        
+        sorted_scores = sorted(team_member_riasec.items(), key=lambda x: x[1], reverse=True)
+        top_types = sorted_scores[:3]
+        
+        prompt = f"""As a management coach, generate coaching questions for a manager to use with their team member based on the team member's RIASEC profile.
+
+Team Member's RIASEC Profile:
+{json.dumps(team_member_riasec, indent=2)}
+
+Top 3 Types: {', '.join([f"{t[0]} ({t[1]:.1f})" for t in top_types])}
+
+Management Context: {management_context}
+
+Team Member Information:
+- Name: {team_member_info.get('name', 'Team Member')}
+- Current Role: {team_member_info.get('role', 'Not specified')}
+- Time in Role: {team_member_info.get('tenure', 'Not specified')}
+- Performance: {team_member_info.get('performance', 'Not specified')}
+- Aspirations: {team_member_info.get('aspirations', 'Not specified')}
+
+Generate 8 coaching questions that help the manager:
+1. Understand how to motivate based on RIASEC type
+2. Assign work that aligns with natural interests
+3. Support career development in type-appropriate ways
+4. Address potential frustrations common to their type
+5. Build on their natural strengths
+
+For each question, provide:
+- The question for the manager to ask
+- Why this question works for this RIASEC type
+- What to listen for in the response
+- How to act on the insights
+
+Return as JSON array:
+[
+  {{
+    "question": "The question to ask team member",
+    "riasec_rationale": "Why this works for their type",
+    "listen_for": ["key point 1", "key point 2"],
+    "action_ideas": ["action 1", "action 2"],
+    "context": "development|motivation|engagement|performance"
+  }}
+]"""
+        
+        return prompt
+    
+    def _create_team_insights_prompt(self,
+                                   team_riasec_profiles: List[Dict[str, Any]],
+                                   team_context: Dict[str, Any]) -> str:
+        """Create prompt for team insights based on RIASEC profiles"""
+        
+        prompt = f"""Analyze this team's RIASEC profiles to provide insights on team dynamics and recommendations.
+
+Team RIASEC Profiles:
+{json.dumps(team_riasec_profiles, indent=2)}
+
+Team Context:
+- Team Size: {len(team_riasec_profiles)}
+- Team Purpose: {team_context.get('purpose', 'Not specified')}
+- Current Challenges: {team_context.get('challenges', 'Not specified')}
+- Goals: {team_context.get('goals', 'Not specified')}
+
+Provide comprehensive team insights including:
+1. Team composition analysis (balance of types)
+2. Natural strengths of this team combination
+3. Potential blind spots or gaps
+4. Communication recommendations based on type mix
+5. Project assignment suggestions
+6. Team development priorities
+7. Potential conflicts and how to manage them
+8. Collaboration strategies
+
+Return as JSON:
+{{
+  "composition_summary": {{
+    "dominant_types": ["type1", "type2"],
+    "missing_types": ["type1", "type2"],
+    "balance_assessment": "Well-balanced|Skewed toward X|Lacking Y"
+  }},
+  "team_strengths": ["strength1", "strength2", ...],
+  "potential_gaps": ["gap1", "gap2", ...],
+  "communication_tips": [
+    {{"tip": "Communication tip", "rationale": "Why this works for this team"}}
+  ],
+  "project_recommendations": [
+    {{"project_type": "Type of project", "why_suitable": "Rationale based on RIASEC mix"}}
+  ],
+  "development_priorities": ["priority1", "priority2", ...],
+  "conflict_areas": [
+    {{"potential_conflict": "Description", "prevention_strategy": "How to prevent/manage"}}
+  ],
+  "collaboration_strategies": ["strategy1", "strategy2", ...]
+}}"""
         
         return prompt
     
@@ -317,6 +530,60 @@ Return as JSON:
             # Fallback parsing
             return self._parse_text_response(content)
     
+    def _get_openai_coaching_questions(self, prompt: str) -> List[Dict[str, Any]]:
+        """Get coaching questions using OpenAI"""
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are an expert career coach specializing in RIASEC-based coaching."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
+            max_tokens=2000
+        )
+        
+        content = response.choices[0].message.content
+        try:
+            return json.loads(content)
+        except json.JSONDecodeError:
+            return self._get_fallback_coaching_questions({}, "general")
+    
+    def _get_openai_manager_questions(self, prompt: str) -> List[Dict[str, Any]]:
+        """Get manager coaching questions using OpenAI"""
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a management coach helping managers have effective career conversations."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
+            max_tokens=2000
+        )
+        
+        content = response.choices[0].message.content
+        try:
+            return json.loads(content)
+        except json.JSONDecodeError:
+            return self._get_fallback_manager_questions({}, "development")
+    
+    def _get_openai_team_insights(self, prompt: str) -> Dict[str, Any]:
+        """Get team insights using OpenAI"""
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are an organizational psychologist specializing in team dynamics and RIASEC profiles."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
+            max_tokens=2000
+        )
+        
+        content = response.choices[0].message.content
+        try:
+            return json.loads(content)
+        except json.JSONDecodeError:
+            return self._get_fallback_team_insights([])
+    
     def _get_openai_development_plan(self, prompt: str) -> Dict[str, Any]:
         """Get development plan using OpenAI"""
         response = openai.ChatCompletion.create(
@@ -388,6 +655,54 @@ Return as JSON:
         except json.JSONDecodeError:
             return self._parse_text_response(content)
     
+    def _get_anthropic_coaching_questions(self, prompt: str) -> List[Dict[str, Any]]:
+        """Get coaching questions using Anthropic"""
+        response = self.anthropic_client.messages.create(
+            model="claude-3-sonnet-20240229",
+            max_tokens=2000,
+            temperature=0.7,
+            system="You are an expert career coach specializing in RIASEC-based coaching.",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        
+        content = response.content[0].text
+        try:
+            return json.loads(content)
+        except json.JSONDecodeError:
+            return self._get_fallback_coaching_questions({}, "general")
+    
+    def _get_anthropic_manager_questions(self, prompt: str) -> List[Dict[str, Any]]:
+        """Get manager coaching questions using Anthropic"""
+        response = self.anthropic_client.messages.create(
+            model="claude-3-sonnet-20240229",
+            max_tokens=2000,
+            temperature=0.7,
+            system="You are a management coach helping managers have effective career conversations.",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        
+        content = response.content[0].text
+        try:
+            return json.loads(content)
+        except json.JSONDecodeError:
+            return self._get_fallback_manager_questions({}, "development")
+    
+    def _get_anthropic_team_insights(self, prompt: str) -> Dict[str, Any]:
+        """Get team insights using Anthropic"""
+        response = self.anthropic_client.messages.create(
+            model="claude-3-sonnet-20240229",
+            max_tokens=2000,
+            temperature=0.7,
+            system="You are an organizational psychologist specializing in team dynamics.",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        
+        content = response.content[0].text
+        try:
+            return json.loads(content)
+        except json.JSONDecodeError:
+            return self._get_fallback_team_insights([])
+    
     def _get_anthropic_development_plan(self, prompt: str) -> Dict[str, Any]:
         """Get development plan using Anthropic"""
         response = self.anthropic_client.messages.create(
@@ -446,6 +761,36 @@ Return as JSON:
             return json.loads(response.text)
         except json.JSONDecodeError:
             return self._parse_text_response(response.text)
+    
+    def _get_google_coaching_questions(self, prompt: str) -> List[Dict[str, Any]]:
+        """Get coaching questions using Google Gemini"""
+        model = genai.GenerativeModel('gemini-pro')
+        response = model.generate_content(prompt)
+        
+        try:
+            return json.loads(response.text)
+        except json.JSONDecodeError:
+            return self._get_fallback_coaching_questions({}, "general")
+    
+    def _get_google_manager_questions(self, prompt: str) -> List[Dict[str, Any]]:
+        """Get manager coaching questions using Google Gemini"""
+        model = genai.GenerativeModel('gemini-pro')
+        response = model.generate_content(prompt)
+        
+        try:
+            return json.loads(response.text)
+        except json.JSONDecodeError:
+            return self._get_fallback_manager_questions({}, "development")
+    
+    def _get_google_team_insights(self, prompt: str) -> Dict[str, Any]:
+        """Get team insights using Google Gemini"""
+        model = genai.GenerativeModel('gemini-pro')
+        response = model.generate_content(prompt)
+        
+        try:
+            return json.loads(response.text)
+        except json.JSONDecodeError:
+            return self._get_fallback_team_insights([])
     
     def _get_google_development_plan(self, prompt: str) -> Dict[str, Any]:
         """Get development plan using Google Gemini"""
@@ -561,137 +906,152 @@ Return as JSON:
         
         return recommendations_db.get(top_type, recommendations_db["Investigative"])
     
-    def _get_fallback_development_plan(self, selected_careers: List[str]) -> Dict[str, Any]:
-        """Provide fallback development plan"""
-        return {
-            "short_term_goals": [
-                "Complete online certification in your field",
-                "Build a portfolio with 3 projects",
-                "Network with 10 professionals",
-                "Update resume and LinkedIn",
-                "Learn one new relevant tool/technology"
+    def _get_fallback_coaching_questions(self, riasec_scores: Dict[str, float], context: str) -> List[Dict[str, Any]]:
+        """Provide fallback coaching questions based on RIASEC profile"""
+        
+        # Get top type
+        if riasec_scores:
+            top_type = max(riasec_scores.items(), key=lambda x: x[1])[0]
+        else:
+            top_type = "Investigative"
+        
+        # RIASEC-specific coaching questions
+        questions_by_type = {
+            "Realistic": [
+                {
+                    "question": "What hands-on projects or practical problems have energized you recently?",
+                    "riasec_relevance": "Realistic types thrive on tangible, practical work",
+                    "potential_insights": "Identifies specific technical interests and preferred working styles",
+                    "follow_up_probes": ["What made it satisfying?", "How did you approach the challenge?"],
+                    "category": "strengths"
+                },
+                {
+                    "question": "How do you balance your preference for independent work with team collaboration needs?",
+                    "riasec_relevance": "Realistic types often prefer working alone but need team skills",
+                    "potential_insights": "Reveals collaboration challenges and growth opportunities",
+                    "follow_up_probes": ["When is collaboration most valuable to you?", "What team dynamics work best?"],
+                    "category": "challenges"
+                }
             ],
-            "medium_term_goals": [
-                "Gain practical experience through internship/freelance",
-                "Develop expertise in a specialized area",
-                "Build professional network of 50+ connections",
-                "Contribute to open source or community projects",
-                "Achieve one professional certification"
+            "Investigative": [
+                {
+                    "question": "What complex problems or mysteries are you currently trying to solve?",
+                    "riasec_relevance": "Investigative types are driven by intellectual challenges",
+                    "potential_insights": "Uncovers intellectual passions and analytical strengths",
+                    "follow_up_probes": ["What approaches are you taking?", "What fascinates you about this?"],
+                    "category": "strengths"
+                },
+                {
+                    "question": "How do you translate your analytical insights into action and impact?",
+                    "riasec_relevance": "Investigative types may struggle with implementation",
+                    "potential_insights": "Identifies gaps between analysis and execution",
+                    "follow_up_probes": ["What helps you move from thinking to doing?", "Where do you get stuck?"],
+                    "category": "growth"
+                }
             ],
-            "long_term_goals": [
-                "Secure position in target role",
-                "Become recognized expert in your niche",
-                "Mentor others in your field",
-                "Lead significant projects",
-                "Achieve senior-level expertise"
+            "Artistic": [
+                {
+                    "question": "What creative projects or ideas are you most excited about right now?",
+                    "riasec_relevance": "Artistic types need creative expression for fulfillment",
+                    "potential_insights": "Reveals creative drivers and potential career directions",
+                    "follow_up_probes": ["What would it take to pursue this?", "How could this fit into your career?"],
+                    "category": "exploration"
+                },
+                {
+                    "question": "How do you handle the tension between creative freedom and practical constraints?",
+                    "riasec_relevance": "Artistic types often struggle with structure and limitations",
+                    "potential_insights": "Shows adaptability and professional maturity",
+                    "follow_up_probes": ["When have constraints actually helped your creativity?", "What structures support you?"],
+                    "category": "challenges"
+                }
             ],
-            "skills_to_develop": {
-                "high_priority": ["Technical skills for role", "Communication", "Problem-solving"],
-                "medium_priority": ["Leadership", "Project management", "Industry knowledge"],
-                "low_priority": ["Advanced specializations", "Cross-functional skills"]
-            },
-            "recommended_courses": [
-                {"title": "Coursera Professional Certificates", "provider": "Coursera", "duration": "3-6 months", "cost": "$49/month"},
-                {"title": "LinkedIn Learning Paths", "provider": "LinkedIn", "duration": "2-4 months", "cost": "$29/month"},
-                {"title": "Udemy Specialized Courses", "provider": "Udemy", "duration": "Self-paced", "cost": "$50-200"},
-                {"title": "edX MicroMasters", "provider": "edX", "duration": "6-12 months", "cost": "$800-1500"}
+            "Social": [
+                {
+                    "question": "Describe a recent situation where you made a meaningful difference in someone's life.",
+                    "riasec_relevance": "Social types are motivated by helping and impact",
+                    "potential_insights": "Clarifies values and preferred ways of helping",
+                    "follow_up_probes": ["What made this meaningful to you?", "How could you do more of this?"],
+                    "category": "values"
+                },
+                {
+                    "question": "How do you maintain boundaries while being naturally helpful and empathetic?",
+                    "riasec_relevance": "Social types can overextend themselves helping others",
+                    "potential_insights": "Reveals self-care practices and boundary challenges",
+                    "follow_up_probes": ["When is it hardest to say no?", "What helps you recharge?"],
+                    "category": "growth"
+                }
             ],
-            "networking_strategies": [
-                "Join professional associations in your field",
-                "Attend industry conferences and webinars",
-                "Engage on LinkedIn with thought leaders",
-                "Participate in local meetups",
-                "Find a mentor in your target field"
+            "Enterprising": [
+                {
+                    "question": "What leadership opportunity or business challenge excites you most right now?",
+                    "riasec_relevance": "Enterprising types seek influence and leadership roles",
+                    "potential_insights": "Identifies leadership aspirations and entrepreneurial interests",
+                    "follow_up_probes": ["What impact do you want to have?", "What's holding you back?"],
+                    "category": "exploration"
+                },
+                {
+                    "question": "How do you balance your drive for results with developing others?",
+                    "riasec_relevance": "Enterprising types may focus on outcomes over people",
+                    "potential_insights": "Shows leadership maturity and growth areas",
+                    "follow_up_probes": ["When have you seen people development drive better results?", "What's challenging about this?"],
+                    "category": "growth"
+                }
             ],
-            "portfolio_projects": [
-                {"title": "Industry Case Study", "description": "Analyze and solve a real industry problem", "skills_demonstrated": ["Analysis", "Problem-solving"]},
-                {"title": "Personal Project", "description": "Build something that showcases your skills", "skills_demonstrated": ["Technical skills", "Creativity"]},
-                {"title": "Collaborative Project", "description": "Work with others on a meaningful project", "skills_demonstrated": ["Teamwork", "Communication"]}
-            ],
-            "milestones": {
-                "3_months": ["Complete first certification", "Build first portfolio project"],
-                "6_months": ["Expand network to 25 connections", "Complete 3 portfolio projects"],
-                "12_months": ["Apply for target positions", "Achieve key certification"],
-                "24_months": ["Secure role in target field", "Establish industry presence"]
-            }
-        }
-    
-    def _get_fallback_interview_questions(self, career_title: str) -> List[Dict[str, str]]:
-        """Provide fallback interview questions"""
-        return [
-            {
-                "question": "Tell me about yourself and why you're interested in this role.",
-                "type": "motivation",
-                "why_asked": "To understand your background and motivation",
-                "key_points": ["Relevant experience", "Career goals", "Interest in company"],
-                "answer_structure": "Past experience → Current situation → Future goals aligned with role"
-            },
-            {
-                "question": "Describe a challenging project you've worked on.",
-                "type": "behavioral",
-                "why_asked": "To assess problem-solving and resilience",
-                "key_points": ["Challenge faced", "Actions taken", "Results achieved", "Lessons learned"],
-                "answer_structure": "Use STAR method: Situation → Task → Action → Result"
-            },
-            {
-                "question": "How do you stay updated with industry trends?",
-                "type": "technical",
-                "why_asked": "To gauge continuous learning commitment",
-                "key_points": ["Learning resources", "Professional development", "Application of knowledge"],
-                "answer_structure": "Specific resources → How you apply learning → Recent example"
-            }
-        ]
-    
-    def _get_fallback_skills_analysis(self, target_career: str) -> Dict[str, Any]:
-        """Provide fallback skills analysis"""
-        return {
-            "required_skills": {
-                "essential": ["Core technical skills", "Communication", "Problem-solving"],
-                "important": ["Project management", "Collaboration", "Analytical thinking"],
-                "nice_to_have": ["Leadership", "Public speaking", "Advanced specializations"]
-            },
-            "skills_gap": ["Industry-specific knowledge", "Technical certifications", "Practical experience"],
-            "transferable_skills": ["Communication", "Time management", "Teamwork"],
-            "learning_priorities": [
-                {"skill": "Core Technical Skills", "priority": 1, "estimated_time": "3-6 months", "difficulty": "medium"},
-                {"skill": "Industry Knowledge", "priority": 2, "estimated_time": "2-3 months", "difficulty": "easy"},
-                {"skill": "Specialized Tools", "priority": 3, "estimated_time": "1-2 months", "difficulty": "medium"}
-            ],
-            "learning_resources": [
-                {"skill": "Technical Skills", "resources": ["Online courses", "Documentation", "Tutorials", "Practice projects"]},
-                {"skill": "Industry Knowledge", "resources": ["Industry publications", "Podcasts", "Conferences", "Networking"]}
+            "Conventional": [
+                {
+                    "question": "What systems or processes have you improved or organized recently?",
+                    "riasec_relevance": "Conventional types excel at creating order and efficiency",
+                    "potential_insights": "Highlights organizational strengths and process thinking",
+                    "follow_up_probes": ["What impact did this have?", "What other areas need this attention?"],
+                    "category": "strengths"
+                },
+                {
+                    "question": "How do you stay engaged when work requires flexibility over structure?",
+                    "riasec_relevance": "Conventional types may struggle with ambiguity",
+                    "potential_insights": "Reveals adaptability and coping strategies",
+                    "follow_up_probes": ["What helps you navigate uncertainty?", "When is flexibility actually helpful?"],
+                    "category": "challenges"
+                }
             ]
         }
+        
+        return questions_by_type.get(top_type, questions_by_type["Investigative"])
     
-    def _parse_text_response(self, text: str) -> List[Dict[str, Any]]:
-        """Parse text response when JSON parsing fails"""
-        # Basic parsing to extract career recommendations
-        careers = []
-        lines = text.split('\n')
-        current_career = {}
+    def _get_fallback_manager_questions(self, team_member_riasec: Dict[str, float], context: str) -> List[Dict[str, Any]]:
+        """Provide fallback manager coaching questions based on team member's RIASEC"""
         
-        for line in lines:
-            line = line.strip()
-            if line and any(keyword in line.lower() for keyword in ['title:', 'job:', 'career:', 'position:']):
-                if current_career:
-                    careers.append(current_career)
-                current_career = {"title": line.split(':', 1)[-1].strip()}
-            elif current_career and line:
-                if 'description' not in current_career:
-                    current_career['description'] = line
-                else:
-                    current_career['description'] += ' ' + line
+        # Get top type
+        if team_member_riasec:
+            top_type = max(team_member_riasec.items(), key=lambda x: x[1])[0]
+        else:
+            top_type = "Investigative"
         
-        if current_career:
-            careers.append(current_career)
-        
-        # Ensure we have required fields
-        for career in careers:
-            career.setdefault('match_reason', 'Matches your profile')
-            career.setdefault('required_skills', ['Communication', 'Problem-solving', 'Technical skills'])
-            career.setdefault('education', 'Bachelor\'s degree preferred')
-            career.setdefault('salary_range', '$50,000 - $100,000')
-            career.setdefault('growth_outlook', 'Positive growth expected')
-            career.setdefault('daily_tasks', ['Varied responsibilities'])
-        
-        return careers[:5] if careers else self._get_fallback_recommendations({})
+        # Manager questions tailored to team member's type
+        manager_questions = {
+            "Realistic": [
+                {
+                    "question": "What hands-on projects could I assign you that would really energize you?",
+                    "riasec_rationale": "Realistic types need tangible, practical work to stay engaged",
+                    "listen_for": ["Technical challenges", "Building/fixing things", "Clear outcomes"],
+                    "action_ideas": ["Assign technical projects", "Reduce meetings", "Provide tools/resources"],
+                    "context": "engagement"
+                },
+                {
+                    "question": "How can I better support your need for independent work while meeting team goals?",
+                    "riasec_rationale": "Realistic types often work best with autonomy",
+                    "listen_for": ["Collaboration pain points", "Preferred work style", "Communication needs"],
+                    "action_ideas": ["Create solo work time", "Clarify when collaboration is essential", "Respect work style"],
+                    "context": "performance"
+                }
+            ],
+            "Investigative": [
+                {
+                    "question": "What complex problems would you love to dig into if you had the time?",
+                    "riasec_rationale": "Investigative types are motivated by intellectual challenges",
+                    "listen_for": ["Research interests", "Analytical projects", "Learning desires"],
+                    "action_ideas": ["Assign research projects", "Provide learning time", "Connect with experts"],
+                    "context": "development"
+                },
+                {
+                    "question": "How can I help you see the practical impact of your analytical work?",
+                    "riasec_rationale": "Investigative types may
