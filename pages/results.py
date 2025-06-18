@@ -1,251 +1,167 @@
-
 import streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px
-from typing import Dict, List, Any
+from utils.llm_manager import LLMManager
+from utils.data_manager import DataManager
 import pandas as pd
 
-def show_results_page(data_manager):
-    """Display assessment results and career recommendations"""
-    st.header("📊 Your Career Assessment Results")
+def show_results():
+    st.title("📊 Your Career Assessment Results")
     
-    # Check if assessments are complete
-    if not has_completed_assessments():
-        st.warning("Please complete all assessments to view your full results.")
-        if st.button("Go to Assessments"):
-            st.session_state.current_page = "assessment"
-            st.rerun()
+    # Check if assessment is complete
+    if 'assessment_complete' not in st.session_state or not st.session_state.assessment_complete:
+        st.warning("Please complete the assessment first to see your results.")
         return
     
-    # Load user profile
-    user_profile = data_manager.load_user_profile(st.session_state.username)
+    # Initialize managers
+    llm_manager = LLMManager()
+    data_manager = DataManager()
     
-    # Display results based on persona
-    persona = st.session_state.get('selected_persona', 'Individual')
+    # Get assessment data
+    scores = st.session_state.assessment_scores
+    assessment_data = st.session_state.assessment_data
     
-    if persona == 'Individual':
-        show_individual_results(user_profile, data_manager)
-    elif persona == 'Coach':
-        show_coach_results(user_profile, data_manager)
-    elif persona == 'Manager':
-        show_manager_results(user_profile, data_manager)
-
-def has_completed_assessments():
-    """Check if user has completed required assessments"""
-    assessment_data = st.session_state.get('assessment_data', {})
-    return (
-        assessment_data.get('riasec', {}).get('completed', False) and
-        assessment_data.get('skills', {}).get('completed', False) and
-        assessment_data.get('values', {}).get('completed', False)
-    )
-
-def show_individual_results(user_profile: Dict[str, Any], data_manager):
-    """Show results for individual users"""
-    
-    # RIASEC Profile
-    st.subheader("🎯 Your RIASEC Profile")
-    
-    riasec_scores = user_profile['assessments']['riasec']['data']['scores']
+    # Display RIASEC Profile
+    st.subheader("Your RIASEC Profile")
     
     # Create radar chart
-    fig = create_riasec_radar_chart(riasec_scores)
+    categories = list(scores.keys())
+    values = list(scores.values())
+    
+    fig = go.Figure()
+    
+    fig.add_trace(go.Scatterpolar(
+        r=values,
+        theta=categories,
+        fill='toself',
+        name='Your Profile'
+    ))
+    
+    fig.update_layout(
+        polar=dict(
+            radialaxis=dict(
+                visible=True,
+                range=[0, 5]
+            )),
+        showlegend=False,
+        title="RIASEC Interest Profile"
+    )
+    
     st.plotly_chart(fig, use_container_width=True)
     
-    # Top 3 RIASEC types
-    top_types = sorted(riasec_scores.items(), key=lambda x: x[1], reverse=True)[:3]
+    # Display top 3 types
+    sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    top_types = sorted_scores[:3]
+    
+    st.subheader("Your Top Interest Areas")
     
     col1, col2, col3 = st.columns(3)
-    for i, (riasec_type, score) in enumerate(top_types):
+    
+    for i, (type_name, score) in enumerate(top_types):
         with [col1, col2, col3][i]:
             st.metric(
-                f"#{i+1} {riasec_type.capitalize()}",
-                f"{score:.0f}%",
-                help=get_riasec_description(riasec_type)
+                label=f"#{i+1} {type_name}",
+                value=f"{score:.1f}/5.0",
+                delta=f"{(score/5)*100:.0f}%"
             )
     
-    st.divider()
+    # Generate career recommendations
+    st.subheader("🎯 Recommended Careers")
     
-    # Skills Profile
-    st.subheader("💪 Your Skills Profile")
-    
-    skills_data = user_profile['assessments']['skills']['data']['responses']
-    skills_df = create_skills_dataframe(skills_data)
-    
-    # Skills bar chart
-    fig = px.bar(
-        skills_df,
-        x='confidence_score',
-        y='skill',
-        orientation='h',
-        color='category',
-        title="Skills Confidence Levels"
-    )
-    st.plotly_chart(fig, use_container_width=True)
-    
-    st.divider()
-    
-    # Career Recommendations
-    st.subheader("🎯 Recommended Career Paths")
-    
-    # Get career recommendations
-    careers = data_manager.get_top_careers(riasec_scores, num_careers=10)
-    
-    # Display top careers
-    for i, career in enumerate(careers[:5]):
-        with st.expander(f"#{i+1} {career['title']} - {career['match_score']:.0f}% Match"):
-            col1, col2 = st.columns([2, 1])
-            
-            with col1:
-                st.write("**Description:**")
-                st.write(career.get('description', 'Career description coming soon...'))
-                
-                st.write("**Key Responsibilities:**")
-                for resp in career.get('responsibilities', ['Details coming soon']):
-                    st.write(f"• {resp}")
-            
-            with col2:
-                st.write("**Required Skills:**")
-                for skill in career.get('required_skills', ['Skills analysis pending']):
-                    st.write(f"• {skill}")
-                
-                st.write("**Education:**")
-                st.write(career.get('education', 'Varies by employer'))
-                
-                st.write("**Salary Range:**")
-                st.write(career.get('salary_range', 'Competitive'))
-    
-    # Export results
-    st.divider()
-    if st.button("📥 Download Full Report"):
-        export_data = data_manager.export_user_data(st.session_state.username)
-        st.download_button(
-            label="Download JSON Report",
-            data=json.dumps(export_data, indent=2),
-            file_name=f"career_assessment_{st.session_state.username}.json",
-            mime="application/json"
+    with st.spinner("Generating personalized career recommendations..."):
+        # Get AI-powered recommendations
+        career_recommendations = llm_manager.generate_career_recommendations(
+            scores=scores,
+            additional_info=assessment_data['additional_info']
         )
-
-def show_coach_results(user_profile: Dict[str, Any], data_manager):
-    """Show results view for coaches"""
-    st.info("Coach View: Analyzing client assessment results")
-    
-    # Client overview
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        st.subheader("Client Profile Overview")
         
-        # RIASEC summary
-        riasec_scores = user_profile['assessments']['riasec']['data']['scores']
-        top_types = sorted(riasec_scores.items(), key=lambda x: x[1], reverse=True)[:3]
-        
-        st.write("**Primary RIASEC Types:**")
-        for riasec_type, score in top_types:
-            st.write(f"• {riasec_type.capitalize()}: {score:.0f}%")
-        
-        # Values summary
-        values = user_profile['assessments']['values']['data']['selected_values']
-        st.write("\n**Top Work Values:**")
-        for value in values[:5]:
-            st.write(f"• {value}")
+        if career_recommendations:
+            # Display recommendations in expandable sections
+            for i, career in enumerate(career_recommendations[:5]):
+                with st.expander(f"{i+1}. {career['title']}", expanded=(i==0)):
+                    col1, col2 = st.columns([2, 1])
+                    
+                    with col1:
+                        st.write("**Description:**")
+                        st.write(career.get('description', 'No description available'))
+                        
+                        st.write("**Why it matches your profile:**")
+                        st.write(career.get('match_reason', 'Based on your RIASEC scores'))
+                        
+                        st.write("**Required Skills:**")
+                        skills = career.get('skills', [])
+                        if skills:
+                            st.write(", ".join(skills))
+                    
+                    with col2:
+                        st.write("**Match Score:**")
+                        match_score = career.get('match_score', 85)
+                        st.progress(match_score/100)
+                        st.caption(f"{match_score}% match")
+                        
+                        st.write("**Salary Range:**")
+                        st.write(career.get('salary_range', 'Varies'))
+                        
+                        st.write("**Growth Outlook:**")
+                        st.write(career.get('growth_outlook', 'Average'))
     
-    with col2:
-        # Coaching insights
-        st.subheader("AI Coaching Insights")
-        
-        if st.button("Generate Coaching Insights"):
-            with st.spinner("Analyzing profile..."):
-                # This would call the LLM to generate insights
-                st.success("Insights generated!")
-                st.write("""
-                **Key Observations:**
-                - Strong investigative and artistic tendencies
-                - Values creativity and autonomy
-                - May thrive in research or design roles
-                
-                **Suggested Discussion Topics:**
-                - Exploring creative technical roles
-                - Building a portfolio
-                - Networking strategies
-                """)
+    # Career Development Plan
+    st.subheader("📈 Your Career Development Plan")
     
-    # Coaching questions bank
+    with st.spinner("Creating your personalized development plan..."):
+        development_plan = llm_manager.generate_development_plan(
+            scores=scores,
+            careers=career_recommendations[:3],
+            additional_info=assessment_data['additional_info']
+        )
+        
+        if development_plan:
+            tabs = st.tabs(["Short-term Goals", "Skills to Develop", "Resources", "Action Steps"])
+            
+            with tabs[0]:
+                st.write("**Goals for the next 6 months:**")
+                for goal in development_plan.get('short_term_goals', []):
+                    st.write(f"• {goal}")
+            
+            with tabs[1]:
+                st.write("**Key skills to focus on:**")
+                skills_df = pd.DataFrame(development_plan.get('skills_to_develop', []))
+                if not skills_df.empty:
+                    st.dataframe(skills_df, use_container_width=True)
+            
+            with tabs[2]:
+                st.write("**Recommended resources:**")
+                for resource in development_plan.get('resources', []):
+                    st.write(f"• {resource}")
+            
+            with tabs[3]:
+                st.write("**Your action plan:**")
+                for i, step in enumerate(development_plan.get('action_steps', [])):
+                    st.checkbox(step, key=f"action_{i}")
+    
+    # Export options
     st.divider()
-    st.subheader("🤔 Coaching Questions")
-    
-    question_categories = {
-        "Self-Discovery": [
-            "What activities make you lose track of time?",
-            "When do you feel most energized at work?",
-            "What accomplishments are you most proud of?"
-        ],
-        "Career Exploration": [
-            "What aspects of your ideal job are non-negotiable?",
-            "How do you define career success?",
-            "What industries intrigue you and why?"
-        ],
-        "Action Planning": [
-            "What's one step you can take this week toward your career goals?",
-            "Who in your network could provide valuable insights?",
-            "What skills would you like to develop next?"
-        ]
-    }
-    
-    for category, questions in question_categories.items():
-        with st.expander(category):
-            for question in questions:
-                st.write(f"• {question}")
-
-def show_manager_results(user_profile: Dict[str, Any], data_manager):
-    """Show results view for managers"""
-    st.info("Manager View: Team member development insights")
-    
-    # Team member summary
-    st.subheader("Team Member Profile")
     
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.metric("Primary Type", "Investigative", "85%")
+        if st.button("📄 Export Report", use_container_width=True):
+            # Generate PDF report
+            report_data = data_manager.generate_report(assessment_data, career_recommendations)
+            st.download_button(
+                label="Download PDF Report",
+                data=report_data,
+                file_name=f"career_assessment_{st.session_state.username}.pdf",
+                mime="application/pdf"
+            )
     
     with col2:
-        st.metric("Top Skill", "Data Analysis", "Expert")
+        if st.button("📧 Email Results", use_container_width=True):
+            st.info("Email functionality coming soon!")
     
     with col3:
-        st.metric("Key Value", "Innovation", "High")
-    
-    # Development recommendations
-    st.divider()
-    st.subheader("📈 Development Recommendations")
-    
-    recommendations = [
-        {
-            "area": "Technical Leadership",
-            "current": "Individual Contributor",
-            "target": "Technical Lead",
-            "actions": ["Mentor junior developers", "Lead technical discussions", "Own system architecture decisions"]
-        },
-        {
-            "area": "Communication Skills",
-            "current": "Intermediate",
-            "target": "Advanced",
-            "actions": ["Present at team meetings", "Write technical documentation", "Facilitate workshops"]
-        }
-    ]
-    
-    for rec in recommendations:
-        with st.expander(f"{rec['area']}: {rec['current']} → {rec['target']}"):
-            st.write("**Recommended Actions:**")
-            for action in rec['actions']:
-                st.write(f"• {action}")
-    
-    # Team fit analysis
-    st.divider()
-    st.subheader("🤝 Team Fit Analysis")
-    
-    # Mock team composition data
-    team_data = pd.DataFrame({
-        'Member': ['Current User', 'Team Avg'],
-        'Realistic': [30, 45],
-        'Investigative': [85, 60],
-        'Artistic': [
+        if st.button("🔄 Retake Assessment", use_container_width=True):
+            # Clear assessment data
+            st.session_state.assessment_complete = False
+            st.session_state.responses = {}
+            st.rerun()

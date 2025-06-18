@@ -1,0 +1,16 @@
+credentials:
+  usernames:
+    admin:
+      email: admin@example.com
+      name: Admin User
+      password: $2b$12$iWi0I9pM1W0sKMZhR.q0lOHzgvqGmF5MCxlP9MwC7PFwF3LXGPcnO  # admin123
+    demo:
+      email: demo@example.com
+      name: Demo User
+      password: $2b$12$0TzEpNsHH1SDz5t5HHQP9OlSSMDflLwMnGmrbSaZ7X6LYWwJbmFSe  # demo123
+cookie:
+  name: career_atlas_cookie
+  key: random_signature_key_change_this_in_production
+  expiry_days: 30
+preauthorized:
+  emails: []
