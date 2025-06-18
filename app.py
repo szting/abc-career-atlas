@@ -1,10 +1,6 @@
 import streamlit as st
-import streamlit_authenticator as stauth
 from utils.auth_manager import AuthManager
-from utils.data_manager import DataManager
-from utils.llm_manager import LLMManager
 import yaml
-from yaml.loader import SafeLoader
 
 # Page configuration
 st.set_page_config(
@@ -15,43 +11,55 @@ st.set_page_config(
 )
 
 # Initialize session state
-if 'authentication_status' not in st.session_state:
-    st.session_state['authentication_status'] = None
-if 'name' not in st.session_state:
-    st.session_state['name'] = None
-if 'username' not in st.session_state:
-    st.session_state['username'] = None
+if 'authenticated' not in st.session_state:
+    st.session_state['authenticated'] = False
 
-# Load configuration
-with open('config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
-
-# Initialize authenticator
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
-)
-
-# Login widget
-name, authentication_status, username = authenticator.login('Login', 'main')
-
-if authentication_status == False:
-    st.error('Username/password is incorrect')
-elif authentication_status == None:
-    st.warning('Please enter your username and password')
-elif authentication_status:
-    # Store authentication info in session state
-    st.session_state['authentication_status'] = authentication_status
-    st.session_state['name'] = name
-    st.session_state['username'] = username
+# Show login page if not authenticated
+if not st.session_state.get('authenticated', False):
+    st.title("🧭 Career Atlas")
+    st.subheader("Login to Continue")
     
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col2:
+        with st.form("login_form"):
+            username = st.text_input("Username")
+            password = st.text_input("Password", type="password")
+            submit = st.form_submit_button("Login", use_container_width=True)
+            
+            if submit:
+                result = AuthManager.login(username, password)
+                if result['authenticated']:
+                    # Store user info in session state
+                    st.session_state.update(result)
+                    st.success(f"Welcome, {result['name']}!")
+                    st.rerun()
+                else:
+                    st.error("Invalid username or password")
+        
+        st.divider()
+        
+        # Show demo credentials
+        st.info("""
+        **Demo Credentials:**
+        - Username: `demo` / Password: `demo123` (for testing)
+        - Username: `admin` / Password: `admin123` (for admin access)
+        """)
+
+else:
+    # User is authenticated - show main app
     # Sidebar
     with st.sidebar:
-        st.write(f'Welcome *{name}*')
-        authenticator.logout('Logout', 'sidebar')
+        st.write(f"Welcome *{st.session_state['name']}*")
+        
+        # Show role badge
+        if st.session_state['role'] == 'admin':
+            st.success("🔐 Admin Access")
+        
+        # Logout button
+        if st.button("Logout", use_container_width=True):
+            AuthManager.logout()
+            st.rerun()
         
         st.divider()
         

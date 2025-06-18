@@ -1,276 +1,401 @@
-# Career Assessment Tool
+# Career Atlas - AI-Powered Career Guidance Platform
 
-A comprehensive career guidance application with RIASEC personality assessment, skills evaluation, work values analysis, and personalized coaching.
+A comprehensive career assessment and guidance application built with Streamlit, featuring RIASEC personality assessment, skills evaluation, work values analysis, and AI-powered personalized coaching.
 
 ## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
-- [Recent Fixes](#recent-fixes)
-- [Streamlit Implementation](#streamlit-implementation)
-- [Customizing Career Frameworks](#customizing-career-frameworks)
-  - [Career Paths](#career-paths)
-  - [RIASEC Questions](#riasec-questions)
-  - [Skills Assessment](#skills-assessment)
-  - [Work Values](#work-values)
-  - [Coaching Questions](#coaching-questions)
-- [File Upload System](#file-upload-system)
+- [How It Works](#how-it-works)
+- [Technical Architecture](#technical-architecture)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [User Guide](#user-guide)
+- [Code Structure](#code-structure)
+- [Known Issues](#known-issues)
+- [Customization Guide](#customization-guide)
 - [API Integration](#api-integration)
+- [Troubleshooting](#troubleshooting)
 
 ## Overview
 
-This Career Assessment Tool helps users discover suitable career paths based on their personality traits (RIASEC model), skills confidence, and work values. The application supports multiple user personas (Individual, Career Coach, Manager) and includes an admin panel for customization.
+Career Atlas is an intelligent career guidance system that helps users discover their ideal career paths through scientifically-backed assessments and AI-powered recommendations. Think of it as having a personal career counselor available 24/7.
+
+### What Makes Career Atlas Special?
+
+- **Science-Based**: Uses the proven RIASEC (Holland Code) model for personality assessment
+- **AI-Enhanced**: Leverages artificial intelligence for personalized recommendations
+- **Multi-User Support**: Different interfaces for individuals, coaches, and managers
+- **Comprehensive**: Covers personality, skills, and values for holistic career matching
+- **Customizable**: Administrators can tailor assessments to specific industries or organizations
 
 ## Features
 
-- **Multi-persona System**: Different interfaces for individuals, career coaches, and managers
-- **Comprehensive Assessments**: RIASEC personality test, skills confidence evaluation, and work values prioritization
-- **Career Matching Algorithm**: Matches user profiles with suitable career paths
-- **Coaching Dashboard**: Provides personalized coaching questions based on RIASEC profile
-- **Manager Dashboard**: Offers team development insights and reflection questions
-- **Admin Panel**: Allows customization of assessment content, API keys, and data visualization
-- **Data Visualization**: Spider diagrams for RIASEC profiles and skills confidence
-- **Password Protection**: Simple authentication system to secure access
+### For Individuals
+- **RIASEC Personality Assessment**: Discover your Holland Code through interactive questions
+- **Skills Confidence Evaluation**: Rate your confidence across various skill categories
+- **Work Values Prioritization**: Identify what matters most in your ideal workplace
+- **AI-Powered Career Matching**: Get personalized career recommendations based on your profile
+- **Development Planning**: Receive actionable steps to reach your career goals
+- **Visual Analytics**: See your results through interactive charts and graphs
 
-## Recent Fixes
+### For Career Coaches
+- **Client Dashboard**: Access coaching questions tailored to each client's RIASEC profile
+- **Guided Conversations**: Use AI-generated prompts to facilitate meaningful discussions
+- **Progress Tracking**: Monitor client assessment completion and results
+- **Resource Library**: Access coaching materials organized by personality type
 
-### Part 1: Password Authentication Fix (Completed)
+### For Managers
+- **Team Insights**: Understand your team's collective strengths and interests
+- **Development Questions**: Get conversation starters for one-on-ones
+- **Skills Gap Analysis**: Identify areas for team development
+- **Succession Planning**: Match internal talent with role requirements
 
-**Issue**: Password page was not displaying in Preview despite authentication code being present.
+### For Administrators
+- **Content Management**: Customize assessment questions and career databases
+- **Analytics Dashboard**: View usage statistics and assessment trends
+- **API Configuration**: Set up AI providers and authentication
+- **Data Export**: Download assessment results for further analysis
 
-**Root Cause**: The authentication check was happening but the main app content was still rendering because Streamlit's execution flow wasn't properly stopped when authentication failed.
+## How It Works
 
-**Fix Implemented**:
-1. Added `st.stop()` immediately after the authentication check in `app.py` to halt execution when not authenticated
-2. Enhanced the logout function to clear all session state except authentication status
-3. Added a unique key to the password input field to prevent caching issues
-4. Ensured authentication state is initialized before any other session state variables
+### The User Journey (In Simple Terms)
 
-**Files Modified**:
-- `app.py`: Added `st.stop()` after authentication check
-- `utils/simple_auth.py`: Enhanced logout function and added input field key
-- `utils/session_state.py`: Ensured authentication state initializes first
+1. **Login**: Users enter their credentials to access the system
+2. **Choose Your Path**: Select whether you're an individual, coach, or manager
+3. **Take Assessments** (for individuals):
+   - Answer questions about your interests (RIASEC)
+   - Rate your confidence in various skills
+   - Rank what's important to you at work
+4. **Get Results**: 
+   - See your personality profile visualized
+   - Review matched careers with explanations
+   - Receive a personalized development plan
+5. **Take Action**: Export results, schedule coaching, or start learning
 
-**Result**: The password page now displays properly and blocks access to the application until the correct password ("Cl@r1tyC2r3r") is entered.
+### The Science Behind It
 
-### Part 2: RIASEC Analytics Update Fix (Completed)
+**RIASEC Model**: Categorizes people into six personality types:
+- **R**ealistic: Hands-on, practical, physical
+- **I**nvestigative: Analytical, intellectual, scientific
+- **A**rtistic: Creative, expressive, original
+- **S**ocial: Helpful, teaching, interpersonal
+- **E**nterprising: Persuasive, leading, influential
+- **C**onventional: Organized, detailed, structured
 
-**Issue**: RIASEC assessment results were not showing in the analytics panel after completing an assessment.
+The app matches your RIASEC profile with careers that have similar profiles, ensuring better job satisfaction and success.
 
-**Root Cause**: The analytics panel was only checking for the existence of data without verifying if the data had actual values. Empty RIASEC scores (all zeros) were being treated as valid data.
+## Technical Architecture
 
-**Fix Implemented**:
-1. Added proper validation to check if RIASEC scores have actual values (not just zeros)
-2. Enhanced the analytics display to show:
-   - Actual score values with progress bars
-   - Top interest areas with descriptions
-   - Detailed assessment progress indicators
-   - Skills confidence summary with categorization
-   - Work values display in a cleaner format
-3. Added informative messages when no data is available
-4. Improved data visualization with progress bars and better formatting
+### Technology Stack
+- **Frontend**: Streamlit (Python web framework)
+- **Authentication**: Streamlit-authenticator / Simple password system
+- **Data Visualization**: Plotly for interactive charts
+- **Data Processing**: Pandas for data manipulation
+- **AI Integration**: OpenAI, Anthropic, or Google AI APIs
+- **Storage**: Local file system / Google Drive integration
 
-**Files Modified**:
-- `pages/admin_panel.py`: Complete overhaul of the analytics section with:
-  - Validation for actual assessment data
-  - Enhanced RIASEC score display with progress bars
-  - Skills categorization (technical, soft skills, other)
-  - Better progress tracking
-  - Clearer user information display
+### Key Components
+1. **Multi-Page Application**: Modular page structure for different user flows
+2. **Session Management**: Maintains user state throughout the assessment
+3. **AI Integration Layer**: Abstracted interface for multiple AI providers
+4. **Data Management**: Handles assessment storage and retrieval
+5. **Analytics Engine**: Processes and visualizes assessment results
 
-**Result**: The analytics panel now properly displays RIASEC results and other assessment data when available, with clear indicators of progress and helpful messages when data is not yet available.
+## Installation
 
-## Streamlit Implementation
+### Prerequisites
+- Python 3.8 or higher
+- pip (Python package manager)
+- Git (for cloning the repository)
 
-The Streamlit implementation consists of the following components:
+### Step-by-Step Installation
 
-### Core Streamlit Files
-
-- **`app.py`**: Main application entry point that handles routing between different pages
-- **`utils/session_state.py`**: Manages session state for user data persistence
-- **`utils/simple_auth.py`**: Handles password authentication and session management
-- **`utils/career_matcher.py`**: Algorithm for matching user profiles with career paths
-
-### Streamlit Page Components
-
-- **`pages/persona_selection.py`**: Initial page for selecting user persona (Individual/Coach/Manager)
-- **`pages/welcome.py`**: Welcome screen with assessment overview
-- **`pages/riasec_assessment.py`**: RIASEC personality assessment
-- **`pages/skills_assessment.py`**: Skills confidence evaluation
-- **`pages/values_assessment.py`**: Work values prioritization
-- **`pages/results.py`**: Results page showing career matches and RIASEC profile
-- **`pages/coaching_dashboard.py`**: Coaching interface with personalized questions
-- **`pages/manager_dashboard.py`**: Manager interface with team insights
-- **`pages/admin_panel.py`**: Admin interface for customization and settings
-
-### Data Files
-
-- **`data/careers.py`**: Career paths database
-- **`data/riasec_questions.py`**: RIASEC assessment questions
-- **`data/skills_list.py`**: Skills assessment categories and items
-- **`data/work_values.py`**: Work values definitions and descriptions
-- **`data/coaching_questions.py`**: Coaching questions framework
-
-## Customizing Career Frameworks
-
-### Career Paths
-
-The career paths database is defined in `data/careers.py`. Each career entry follows this structure:
-
-```python
-{
-    'id': 'unique-identifier',
-    'title': 'Career Title',
-    'description': 'Brief description of the career',
-    'primary_type': 'primary-riasec-type',  # One of: realistic, investigative, artistic, social, enterprising, conventional
-    'secondary_type': 'secondary-riasec-type',  # Optional secondary RIASEC type
-    'required_skills': ['Skill1', 'Skill2', 'Skill3'],  # List of key skills
-    'work_environment': ['Environment1', 'Environment2'],  # Work settings
-    'salary_range': '$X - $Y',  # Typical salary range
-    'growth_outlook': 'Growth projection',  # Job market outlook
-    'education': 'Required education'  # Typical education requirements
-}
+1. **Clone the Repository**
+```bash
+git clone https://github.com/yourusername/career-atlas.git
+cd career-atlas
 ```
 
-To customize:
-1. Add new career entries following the structure above
-2. Ensure each career has a unique `id`
-3. Assign appropriate RIASEC types as `primary_type` and `secondary_type`
-4. List required skills that match or closely relate to skills in the skills assessment
-5. Include relevant work environments that might align with work values
+2. **Create Virtual Environment** (Recommended)
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-**Important**: The career matching algorithm in `utils/career_matcher.py` uses the RIASEC types, required skills, and work environment to calculate matches. Ensure these fields are properly populated for accurate matching.
+3. **Install Dependencies**
+```bash
+pip install -r requirements.txt
+```
 
-### RIASEC Questions
+4. **Set Up Configuration**
+```bash
+# Create config.yaml file (see Configuration section)
+cp config.example.yaml config.yaml
+```
 
-RIASEC assessment questions are defined in a separate file (not shown in the provided code). The expected structure is:
+5. **Run the Application**
+```bash
+streamlit run app.py
+```
 
+## Configuration
+
+### Authentication Setup
+
+Create a `config.yaml` file:
+```yaml
+credentials:
+  usernames:
+    demo:
+      email: demo@example.com
+      name: Demo User
+      password: $2b$12$hashed_password_here  # Use demo123
+    admin:
+      email: admin@example.com
+      name: Admin User
+      password: $2b$12$hashed_password_here  # Use admin123
+
+cookie:
+  expiry_days: 30
+  key: some_signature_key
+  name: some_cookie_name
+
+preauthorized:
+  emails: []
+```
+
+### API Configuration
+
+Set up AI provider credentials in `.env`:
+```env
+OPENAI_API_KEY=your_openai_key_here
+ANTHROPIC_API_KEY=your_anthropic_key_here
+GOOGLE_API_KEY=your_google_key_here
+```
+
+### Google Drive Integration (Optional)
+
+Place your `service_account_key.json` in the project root for Google Drive storage.
+
+## User Guide
+
+### For First-Time Users
+
+1. **Access the App**: Open your browser and go to `http://localhost:8501`
+2. **Login**: Use demo/demo123 for testing or your assigned credentials
+3. **Select Your Role**: Choose Individual, Coach, or Manager
+4. **Complete Assessments**: Answer honestly - there are no right or wrong answers
+5. **Review Results**: Take time to explore your matches and recommendations
+6. **Export Your Report**: Download a PDF for future reference
+
+### For Administrators
+
+1. **Access Admin Panel**: Login with admin credentials
+2. **Customize Content**: Upload new questions or career databases
+3. **Configure APIs**: Set up AI providers for enhanced features
+4. **Monitor Usage**: Check analytics for insights
+
+## Code Structure
+
+```
+career-atlas/
+├── app.py                    # Main application entry point
+├── config.yaml              # Authentication configuration
+├── requirements.txt         # Python dependencies
+├── README.md               # This file
+│
+├── pages/                  # Streamlit pages
+│   ├── persona_selection.py    # Role selection
+│   ├── welcome.py             # Welcome screen
+│   ├── riasec_assessment.py   # RIASEC test
+│   ├── skills_assessment.py   # Skills evaluation
+│   ├── values_assessment.py   # Values ranking
+│   ├── results.py            # Results display
+│   ├── coaching_dashboard.py  # Coach interface
+│   ├── manager_dashboard.py   # Manager interface
+│   └── admin_panel.py        # Admin controls
+│
+├── utils/                  # Utility modules
+│   ├── simple_auth.py        # Authentication
+│   ├── session_state.py      # State management
+│   ├── career_matcher.py     # Matching algorithm
+│   ├── auth_manager.py       # Auth utilities
+│   ├── data_manager.py       # Data handling
+│   └── llm_manager.py        # AI integration
+│
+└── data/                   # Data files
+    ├── careers.py            # Career database
+    ├── riasec_questions.py   # Assessment questions
+    ├── skills_list.py        # Skills inventory
+    ├── work_values.py        # Values definitions
+    └── coaching_questions.py # Coaching prompts
+```
+
+## Known Issues
+
+### Current Limitations
+
+1. **Authentication Conflict**: Two authentication systems present (needs consolidation)
+2. **Missing Data Files**: Core data files need to be created or imported
+3. **Manager Classes**: Implementation pending for data and AI managers
+4. **Navigation Flow**: Mismatch between app.py routing and actual pages
+5. **API Integration**: Needs unified approach for multiple AI providers
+
+### Planned Improvements
+
+- [ ] Consolidate authentication system
+- [ ] Implement missing manager classes
+- [ ] Create comprehensive data files
+- [ ] Add email notification system
+- [ ] Implement PDF report generation
+- [ ] Add multi-language support
+- [ ] Create mobile-responsive design
+- [ ] Add batch assessment capabilities
+
+## Customization Guide
+
+### Adding New Assessment Questions
+
+1. **RIASEC Questions**: Edit `data/riasec_questions.py`
 ```python
 riasec_questions = [
     {
-        'id': 'question-id',
-        'text': 'Question text',
-        'type': 'riasec-type'  # One of: realistic, investigative, artistic, social, enterprising, conventional
+        'id': 'q1',
+        'text': 'I enjoy working with tools',
+        'type': 'realistic'
     },
-    # More questions...
+    # Add more questions...
 ]
 ```
 
-To customize:
-1. Maintain a balanced number of questions for each RIASEC type
-2. Ensure questions clearly reflect the characteristics of their assigned type
-3. Keep questions concise and easy to understand
-4. Avoid biased language that might favor certain demographics
-
-### Skills Assessment
-
-The skills assessment framework should be organized by categories:
-
+2. **Skills Categories**: Modify `data/skills_list.py`
 ```python
 skills_categories = [
     {
-        'name': 'Category Name',
-        'skills': ['Skill 1', 'Skill 2', 'Skill 3']
+        'name': 'Technical Skills',
+        'skills': ['Programming', 'Data Analysis', 'Design']
     },
-    # More categories...
+    # Add more categories...
 ]
 ```
 
-To customize:
-1. Group related skills into logical categories
-2. Keep skill names concise and specific
-3. Include skills relevant to various career paths in your database
-4. Ensure a balanced representation across different fields
+### Adding New Careers
 
-### Work Values
-
-Work values are defined as a list of options with descriptions:
-
+Edit `data/careers.py`:
 ```python
-work_values = [
+careers = [
     {
-        'name': 'Value Name',
-        'description': 'Brief description of the value'
+        'id': 'software-engineer',
+        'title': 'Software Engineer',
+        'description': 'Develops software applications',
+        'primary_type': 'investigative',
+        'secondary_type': 'realistic',
+        'required_skills': ['Programming', 'Problem Solving'],
+        'salary_range': '$70,000 - $150,000',
+        'growth_outlook': 'Much faster than average'
     },
-    # More values...
+    # Add more careers...
 ]
 ```
 
-To customize:
-1. Include a diverse range of work values
-2. Provide clear, concise descriptions
-3. Ensure values align with the keywords used in the career matching algorithm
-4. Consider cultural and generational differences in work values
+### Customizing the Matching Algorithm
 
-### Coaching Questions
+The career matching algorithm in `utils/career_matcher.py` uses these weights:
+- RIASEC alignment: 40%
+- Skills match: 35%
+- Values alignment: 25%
 
-Coaching questions are defined in `data/coaching_questions.py` with the following structure:
-
-```python
-coaching_questions = [
-    {
-        'id': 'question-id',
-        'category': 'category-name',  # e.g., exploration, development, goal-setting, reflection
-        'riasecFocus': 'riasec-type',  # The RIASEC type this question targets
-        'question': 'The main coaching question',
-        'purpose': 'Brief explanation of the question purpose',
-        'followUp': ['Follow-up question 1', 'Follow-up question 2']  # Optional follow-up questions
-    },
-    # More questions...
-]
-```
-
-To customize:
-1. Create questions for each RIASEC type and category
-2. Ensure questions are open-ended and thought-provoking
-3. Include a clear purpose for each question
-4. Add relevant follow-up questions to deepen the conversation
-5. Use language appropriate for coaching conversations
-
-## File Upload System
-
-The admin panel includes a file upload system for updating the career frameworks. When uploading files:
-
-1. Files must be in the correct format (JSON or Python)
-2. The system validates the structure of uploaded files
-3. Templates are available for download to ensure correct formatting
-4. Uploaded files replace the existing frameworks after validation
-
-File upload templates follow the structures outlined in the customization sections above.
+Adjust these weights based on your needs.
 
 ## API Integration
 
-The application can integrate with OpenAI's API for enhanced coaching responses. To configure:
+### Supported AI Providers
 
-1. Access the Admin Panel
-2. Navigate to the API Settings section
-3. Enter your OpenAI API key
-4. Test the connection before saving
-5. Configure fallback responses for when the API is unavailable
+1. **OpenAI**: GPT-3.5/GPT-4 for career recommendations
+2. **Anthropic**: Claude for coaching conversations
+3. **Google**: Gemini for development planning
 
-The API integration enhances the coaching experience by generating personalized follow-up questions and insights based on the user's RIASEC profile and responses.
+### Setting Up AI Features
+
+1. Obtain API keys from your chosen provider
+2. Add keys to `.env` file or through Admin Panel
+3. Configure fallback options for reliability
+4. Test integration before deployment
+
+### API Usage Examples
+
+```python
+# Generate career recommendations
+recommendations = llm_manager.generate_career_recommendations(
+    riasec_scores={'realistic': 4.2, 'investigative': 3.8},
+    skills=['Programming', 'Analysis'],
+    values=['Work-Life Balance', 'Growth']
+)
+
+# Get coaching questions
+questions = llm_manager.get_coaching_questions(
+    riasec_type='social',
+    context='career transition'
+)
+```
+
+## Troubleshooting
+
+### Common Issues and Solutions
+
+**Issue**: "Module not found" errors
+- **Solution**: Ensure all dependencies are installed: `pip install -r requirements.txt`
+
+**Issue**: Authentication not working
+- **Solution**: Check config.yaml format and password hashing
+
+**Issue**: AI features not responding
+- **Solution**: Verify API keys and check rate limits
+
+**Issue**: Assessment results not saving
+- **Solution**: Check file permissions in the project directory
+
+**Issue**: Charts not displaying
+- **Solution**: Update Plotly: `pip install --upgrade plotly`
+
+### Getting Help
+
+1. Check the [Issues](https://github.com/yourusername/career-atlas/issues) page
+2. Review error logs in the terminal
+3. Contact support with:
+   - Error messages
+   - Steps to reproduce
+   - System information
+
+## Contributing
+
+We welcome contributions! Please:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+### Development Guidelines
+
+- Follow PEP 8 style guide
+- Add docstrings to functions
+- Update README for new features
+- Test on multiple browsers
+- Consider accessibility
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- RIASEC model by John L. Holland
+- Streamlit community for framework support
+- Contributors and testers
 
 ---
 
-## Development Notes
-
-### Adding New Career Paths
-
-When adding new career paths, ensure they include:
-
-1. Accurate RIASEC type classifications
-2. Skills that match or closely relate to the skills assessment options
-3. Work environment descriptions that contain keywords related to work values
-4. Comprehensive metadata (salary, education, growth outlook)
-
-The career matching algorithm weighs RIASEC alignment at 40%, skills matching at 35%, and work values alignment at 25%.
-
-### Extending the Assessment
-
-To add new assessment types:
-
-1. Create a new page module in the `pages` directory
-2. Define the assessment questions/items in the `data` directory
-3. Update the session state initialization in `utils/session_state.py`
-4. Add the new step to the navigation flow in `app.py`
-5. Update the career matching algorithm if needed
+**Note**: This is a development version. For production use, ensure proper security measures, API rate limiting, and data protection compliance.

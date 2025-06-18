@@ -1,2 +1,201 @@
 .career-exploration {
   padding: 2rem 0;
+}
+
+.exploration-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.exploration-header h1 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.exploration-header p {
+  color: #7f8c8d;
+  font-size: 1.125rem;
+}
+
+.search-section {
+  margin-bottom: 2rem;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+}
+
+.category-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-button:hover {
+  background-color: #f8f9fa;
+}
+
+.filter-button.active {
+  background-color: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+.careers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.career-card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.career-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.career-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.career-content {
+  padding: 1.5rem;
+}
+
+.career-card h3 {
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+.career-category {
+  color: #3498db;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.career-description {
+  color: #7f8c8d;
+  margin-bottom: 1rem;
+}
+
+.career-stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #7f8c8d;
+  font-size: 0.875rem;
+}
+
+.riasec-tags {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.riasec-tag {
+  padding: 0.25rem 0.5rem;
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.riasec-tag.large {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+.career-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 0.5rem;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: white;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+.modal-content img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.modal-content h2 {
+  color: #2c3e50;
+  margin: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-category {
+  color: #3
